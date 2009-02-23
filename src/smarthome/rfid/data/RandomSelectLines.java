@@ -12,11 +12,11 @@ public class RandomSelectLines {
 		Scanner s = null;
 		PrintStream control = null;
 		PrintStream test = null;
-		for (int i=0; i<many_times; i++) {
+		for (int i=1; i<many_times+1; i++) {
 			try {
 				s = new Scanner(file);
-			    control = new PrintStream(new FileOutputStream ("test" + i + ": control.txt"));
-			    test = new PrintStream(new FileOutputStream("test" + i + ": test.txt"));
+			    control = new PrintStream(new FileOutputStream ("data_files/test" + i + "/: control.txt"));
+			    test = new PrintStream(new FileOutputStream("data_files/test" + i + "/: test.txt"));
 			} catch(FileNotFoundException e) {
 				System.out.println("File not found!");
 				System.exit(0);
