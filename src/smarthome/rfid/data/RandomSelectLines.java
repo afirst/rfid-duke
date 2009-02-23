@@ -16,8 +16,8 @@ public class RandomSelectLines {
 			try {
 				s = new Scanner(file);
 				boolean create_file = (new File("data_files\\test" + i + "\\")).mkdir();
-			    control = new PrintStream(new FileOutputStream ("data_files\\test" + i + "\\ control.txt"));
-			    test = new PrintStream(new FileOutputStream("data_files\\test" + i + "\\ test.txt"));
+			    control = new PrintStream(new FileOutputStream ("data_files\\test" + i + "\\control.txt"));
+			    test = new PrintStream(new FileOutputStream("data_files\\test" + i + "\\test.txt"));
 			} catch(FileNotFoundException e) {
 				System.out.println("File not found!");
 				System.exit(0);
