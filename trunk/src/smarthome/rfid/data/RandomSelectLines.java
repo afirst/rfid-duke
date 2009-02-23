@@ -8,15 +8,15 @@ public class RandomSelectLines {
 	 * you need to delete those two files if you want a new ones. 
 	 */
 	public void main(int many_times) {
-		File file = new File("data_files/database.txt");
+		File file = new File("database.txt");
 		Scanner s = null;
 		PrintStream control = null;
 		PrintStream test = null;
 		for (int i=1; i<many_times+1; i++) {
 			try {
 				s = new Scanner(file);
-			    control = new PrintStream(new FileOutputStream ("data_files/test" + i + "/: control.txt"));
-			    test = new PrintStream(new FileOutputStream("data_files/test" + i + "/: test.txt"));
+			    control = new PrintStream(new FileOutputStream (i + ": control.txt"));
+			    test = new PrintStream(new FileOutputStream(i + ": test.txt"));
 			} catch(FileNotFoundException e) {
 				System.out.println("File not found!");
 				System.exit(0);
