@@ -15,7 +15,7 @@ public class KNearestNeighbors {
 		for (int i = 4; i<controlList.length; i++) {
 			distance = distance + Math.pow(Double.parseDouble(controlList[i])-Double.parseDouble(testList[i]), 2);
 		}
-		return new Double(distance);
+		return new Double(Math.sqrt(distance));
 	}
 	
 	/**
@@ -24,7 +24,7 @@ public class KNearestNeighbors {
 	 * @param k
 	 * @return the indices of the k smallest elements of the list with the smallest distances
 	 */
-	public ArrayList<Integer> findKMin(ArrayList<Double> inputList, int k) {
+	public ArrayList<Integer> findKMinIndices(ArrayList<Double> inputList, int k) {
 		HashMap<Double, Integer> map = new HashMap<Double, Integer>();
 		for (int i=0; i<inputList.size(); i++) {
 			map.put(inputList.get(i),new Integer(i));
@@ -72,7 +72,7 @@ public class KNearestNeighbors {
 				Double dist = knn.computeDistance(controlArray, testArray);
 				list.add(dist);
 			}
-			ArrayList<Integer> kshortest = knn.findKMin(list,4);
+			ArrayList<Integer> kshortest = knn.findKMinIndices(list,4);
 			//System.out.println(kshortest.size());
 			//System.out.println(controlList.size());
 			for(int i=0; i<kshortest.size();i++) {

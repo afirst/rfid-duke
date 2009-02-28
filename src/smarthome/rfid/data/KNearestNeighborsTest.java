@@ -9,7 +9,7 @@ public class KNearestNeighborsTest extends TestCase {
 	public void setUp() {
 		knn = new KNearestNeighbors();
 	}
-	public void testfindKMin() {
+	public void testfindKMinIndices() {
 		ArrayList<Double> inputList = new ArrayList<Double>();
 		inputList.add(new Double(3));
 		inputList.add(new Double(13));
@@ -20,7 +20,7 @@ public class KNearestNeighborsTest extends TestCase {
 		inputList.add(new Double(100));
 		inputList.add(new Double(1));
 		inputList.add(new Double(9));
-		ArrayList<Integer> ans = knn.findKMin(inputList, 3);
+		ArrayList<Integer> ans = knn.findKMinIndices(inputList, 3);
 		ArrayList<Integer> newList = new ArrayList<Integer>();
 		newList.add(new Integer(7));
 		newList.add(new Integer(0));
