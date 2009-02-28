@@ -3,13 +3,67 @@ import java.io.*;
 import java.util.*;
 
 public class KNearestNeighbors {
+	public double[] returnNearestPoint(String testPoint, int k) {
+		ArrayList<String[]> controlData = prepareControlData();
+		ArrayList<Double> signalDistancesList = makeSignalDistancesList(testPoint, controlData);
+		return nearestPoint(controlData, signalDistancesList, k);
+	}
+	
+	public static String CONTROL_ADDRESS = "data_files\\test1\\control.txt";
 	/**
 	 * 
-	 * @param controlList - control signal
+	 * @param s1 - A scanner object which contains contents of the 
+	 * control/training data. 
+	 * @return list of arrays, in which arrays contain coordinates and signals for controls
+	 */
+	public ArrayList<String[]> prepareControlData() {
+		Scanner s1 = makeScanner(ReadFile(CONTROL_ADDRESS));
+		ArrayList<String[]> controlData = new ArrayList<String[]>();
+		while (s1.hasNextLine()) {
+			String[] controlArray = s1.nextLine().split("\t");
+			controlData.add(controlArray);
+		}
+		return controlData;
+	}
+	
+	/**
+	 * Return the distances from control data for each test point
+	 * @param testLine - each test point
+	 * @param controlList
+	 * @return an ArrayList of doubles that are the distances to each control point
+	 * Its length of the number of control points. 
+	 */
+	public ArrayList<Double> makeSignalDistancesList(String testLine, ArrayList<String[]> controlList) {
+		String[] testArray = stringToArray(testLine);
+		ArrayList<Double> list = new ArrayList<Double>();
+		for (String[] controlArray : controlList) {
+			Double dist = computeSignalDistance(controlArray, testArray);
+			list.add(dist);
+		}
+		return list;
+	}
+	
+	public double[] nearestPoint(ArrayList<String[]> controlData, ArrayList<Double> signalDistancesList, int k) {
+		ArrayList<Integer> kshortest = findKMinIndices(signalDistancesList,k);
+		double sum_x=0.0; double sum_y=0.0; double sum_z=0.0;
+		for(int i=0; i<kshortest.size();i++) {
+			String[] controlSignal = controlData.get(kshortest.get(i).intValue());
+			sum_x = sum_x + Double.parseDouble(controlSignal[0]);
+			sum_y = sum_y + Double.parseDouble(controlSignal[1]);
+			sum_z = sum_z + Double.parseDouble(controlSignal[2]);
+		}
+		double[] ret = {sum_x/k, sum_y/k, sum_z/k};
+		return ret;
+	}
+	
+	/**
+	 * 
+	 * @param controlList - control signal in the form of a String array 
+	 * [x, y, z orientation, s1, s2, s3, s4]
 	 * @param testList = test signal
 	 * @return distance between the two signals
 	 */
-	public Double computeDistance(String[] controlList, String[] testList) {
+	public Double computeSignalDistance(String[] controlList, String[] testList) {
 		//signals is a 4-integer array
 		double distance = 0;
 		for (int i = 4; i<controlList.length; i++) {
@@ -38,64 +92,66 @@ public class KNearestNeighbors {
 		return ret; 
 	}
 	
-	public static void main(String arg[]) {
-		KNearestNeighbors knn = new KNearestNeighbors();
-		File control = new File("data\\control.txt");
-		File test = new File("data\\test.txt"); //these would be signals
-		Scanner s1 = null;
-		Scanner s2 = null;
+	public File ReadFile(String address) {
+		return new File(address);
+	}
+	
+	public Scanner makeScanner(File f) {
+		Scanner s = null;
 		try {
-			s1 = new Scanner(control);
-			s2 = new Scanner(test);
+			s= new Scanner(f);
 		} catch(FileNotFoundException e) {
 			System.out.println("File not found!");
 			System.exit(0);
 		}
-		int k = 1;
-		ArrayList<Double> list = new ArrayList<Double>(); //list of dists
+		return s;
+	}
+	
+	public PrintStream makeOutputStream(String address) {
 		PrintStream results = null;
 		try {
-			results = new PrintStream(new FileOutputStream ("data\\results.txt"));
+			results = new PrintStream(new FileOutputStream (address));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 			System.exit(0);
-		}	
-		
-		ArrayList<String[]> controlList = prepareControlList(s1);
+		}
+		return results;
+	}
+	
+	
+	public String[] stringToArray(String testLine) {
+		return testLine.split("\t");
+	}
+	/**
+	 * Return the distances from control data for each test point
+	 * 
+	 * @param testScanner
+	 * @return 
+	 */
+	public ArrayList<Double> getAllSignalDistances(Scanner testScanner, ArrayList<String[]> controlList) {
+		ArrayList<Double> list = new ArrayList<Double>(); 
 		double x = 0;
 		double y = 0;
 		double z = 0;
-		while (s2.hasNextLine()) {
-			String testLine = s2.nextLine();
-			String[] testArray = testLine.split("\t");
-			for (String[] controlArray : controlList) {
-				Double dist = knn.computeDistance(controlArray, testArray);
-				list.add(dist);
-			}
-			ArrayList<Integer> kshortest = knn.findKMinIndices(list,4);
-			//System.out.println(kshortest.size());
-			//System.out.println(controlList.size());
-			for(int i=0; i<kshortest.size();i++) {
-				String[] controlSignal = controlList.get(kshortest.get(i).intValue());
-				x = x + Double.parseDouble(controlSignal[0]);
-				y = y + Double.parseDouble(controlSignal[1]);
-				z = z + Double.parseDouble(controlSignal[2]);
-			}
-			x = x/4.0;
-			y = y/4.0;
-			z = z/4.0;
-			results.println(x + ", " + y + ", " + z);
-			
+		while (testScanner.hasNextLine()) {
+			String testLine = testScanner.nextLine();
+			ArrayList<Double> signalDistancesList = makeSignalDistancesList(testLine, controlList);
+			findKMinIndices(signalDistancesList, 4);
 		}
 	}
+		
+	public void main() {
+		KNearestNeighbors knn = new KNearestNeighbors();
+		File control = knn.ReadFile(CONTROL_ADDRESS);
+		File test = knn.ReadFile("data_files\\test1\\test.txt"); //these would be signals
+		Scanner s1 = makeScanner(control);
+		Scanner s2 = makeScanner(test);
+		int k = 1;
+		PrintStream results = makeOutputStream("data_files\\test1\\results.txt")
+		
+		ArrayList<String[]> controlList = prepareControlData(s1);
 
-	private static ArrayList<String[]> prepareControlList(Scanner s1) {
-		ArrayList<String[]> controlList = new ArrayList<String[]>();
-		while (s1.hasNextLine()) {
-			String controlLine = s1.nextLine();
-			String[] controlArray = controlLine.split("\t");
-			controlList.add(controlArray);
-		}
-		return controlList;
+	}
+	public static void main(String arg[]) {
 	}
 }
