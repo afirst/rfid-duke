@@ -17,14 +17,14 @@ public class Vector {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
 		boolean b = false;
-		for (double x : vector) {
-			sb.append(x);
+		for (double x : vector) {			
 			if (b) {
 				sb.append(", ");
 			}
 			else {
 				b = true;
 			}
+			sb.append(x);
 		}
 		sb.append("}");
 		return sb.toString();

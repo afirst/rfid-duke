@@ -20,6 +20,8 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 	private String TimeStamp;
 	private OutputStream outputStream;
 	private LRX201AdapterListener myListener;
+	private boolean debug = false;
+	private boolean running = false;
 	
 	public LRX201Adapter (CommPortIdentifier Identifier, LRX201AdapterListener listener) {
 		myListener = listener;
@@ -36,7 +38,7 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
         } catch (TooManyListenersException e) {e.printStackTrace();}
         serialPort1.notifyOnDataAvailable(true);
         try {
-            serialPort1.setSerialPortParams(57600,
+            serialPort1.setSerialPortParams(115200,
                 SerialPort.DATABITS_8,
                 SerialPort.STOPBITS_1,
                 SerialPort.PARITY_NONE);
@@ -47,6 +49,16 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
         readThread = new Thread(this);
         readThread.start();
 	}	
+	
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+	
+	private void debugPrint(String text) {
+		if (debug) {
+			System.out.println(text);
+		}
+	}
 	
 	public void run() {
         try {
@@ -95,15 +107,15 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
             			s += data + ", ";
             		}
             		int checksum = inputStream.read();
-            		if (checksum != actualChecksum) {
-            			System.out.println("Invalid response checksum " + checksum + ", " + actualChecksum);
+            		if (checksum != actualChecksum) {            			
+            			debugPrint("Invalid response checksum " + checksum + ", " + actualChecksum);
             		}
-            		System.out.println("Received: " + command + ", data: " + s + (invalidHeader?", invalid header "+header:""));
+            		debugPrint("Received: " + command + ", data: " + s + (invalidHeader?", invalid header "+header:""));
             		if (command == 6 && !invalidHeader && checksum == actualChecksum && length >= 23) {            			
             			int tagID = d[16] * 256*256*256 + d[17] * 256*256 + d[18] * 256 + d[19];
             			int rssi = d[22];
             			if (myListener != null) {
-            				myListener.readTag(receiverID, tagID, rssi);
+            				myListener.readTag(nodeID, tagID, rssi);
             			}
             		}
             	}
@@ -116,11 +128,15 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
         inEvent = false;
     }	
 
+    private int networkId = 255;
+    private int receiverId = 255;
+    private int nodeId = 0;
+    
 	public boolean sendCommand(int command) {
 		return sendCommand(command, new int[0]);
 	}
 	public boolean sendCommand(int command, int[] data) {
-		return sendCommand(255, 255, 0, command, data);
+		return sendCommand(networkId, receiverId, nodeId, command, data);
 	}
 	public boolean sendCommand(int networkID, int receiverID, int nodeID, int command, int[] data) {
 		int checksum = data.length ^ networkID ^ receiverID ^ nodeID ^ command;
@@ -147,15 +163,66 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 		return true;
 	}
 	
+	/*public boolean breakAutoPolling() {
+		try {
+			byte[] b = new byte[800];
+			for (int i = 0; i < 800; i++) {
+				if (i % 2 == 0) {
+					b[i] = (byte)255;					
+				}
+				else {
+					b[i] = (byte)'*';
+				}
+			}
+			outputStream.write(b);
+			outputStream.flush();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}	*/
+			
+	public void start(final int numReaders) {
+		running = true;
+		new Thread(new Runnable() {
+			public void run() {
+				while (running) {
+					for (int j = 1; j <= numReaders; j++) {
+						getTagPacket(0, j, j);
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+						}						
+					}
+				}
+			}			
+		}).start();		
+	}
+	
+	public void stop() {
+		running = false;
+	}
+	
 	public boolean resetNetwork() {
 		return sendCommand(LRX201ReaderCommands.RESET_NETWORK);
 	}
-	public boolean enableAutoPolling() {
-		return sendCommand(LRX201ReaderCommands.ENABLE_AUTO_POLLING);
+	public boolean getTagPacket(int networkId, int receiverId, int nodeId) {
+		return sendCommand(networkId, receiverId, nodeId, LRX201ReaderCommands.GET_TAG_PACKET, new int[0]);
 	}
-	public boolean disableAutoPolling() {
-		return sendCommand(LRX201ReaderCommands.DISABLE_AUTO_POLLING);
-	}
+	public boolean resetNetwork(int networkId, int receiverId, int nodeId) {
+		return sendCommand(networkId, receiverId, nodeId, LRX201ReaderCommands.RESET_NETWORK, new int[0]);
+	}	
+	//public boolean enableAutoPolling() {
+//		return sendCommand(LRX201ReaderCommands.ENABLE_AUTO_POLLING);
+//	}
+//	public boolean enableAutoPolling(int networkId, int receiverId, int nodeId) {
+		//return sendCommand(networkId, receiverId, nodeId, LRX201ReaderCommands.ENABLE_AUTO_POLLING, new int[0]);
+	//}	
+	//public boolean disableAutoPolling(int networkId, int receiverId, int nodeId) {
+//		return sendCommand(networkId, receiverId, nodeId, LRX201ReaderCommands.DISABLE_AUTO_POLLING, new int[0]);
+//	}
 	public boolean pingReader() {
 		return sendCommand(LRX201ReaderCommands.PING_READER);
 	}
@@ -174,6 +241,9 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 	public boolean setReceiverGain(boolean highGain) {
 		return sendCommand(LRX201ReaderCommands.SET_RECEIVER_GAIN, new int[] {highGain ? 1 : 0});
 	}
+	public boolean setReceiverGain(int networkId, int receiverId, int nodeId, boolean highGain) {
+		return sendCommand(networkId, receiverId, nodeId, LRX201ReaderCommands.SET_RECEIVER_GAIN, new int[] {highGain ? 1 : 0});
+	}	
 	public boolean getReceiverGain() {
 		return sendCommand(LRX201ReaderCommands.GET_RECEIVER_GAIN);
 	}	
@@ -201,16 +271,4 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 	public boolean getVersionInformation() {
 		return sendCommand(LRX201ReaderCommands.GET_VERSION_INFORMATION);
 	}	
-	
-	public void scan ()
-	{
-//		if (!lastScan.containsKey(tag.getTagID())
-//				|| System.currentTimeMillis() > lastScan.get(tag
-//						.getTagID()) + 5000) {
-//			updater.toggleTag(tag.getTagID().replace(" ", ""));
-//			printMessage(tag.getTagID() + " toggled on Facebook");
-//		}
-//		
-//		lastScan.put(tag.getTagID(), System.currentTimeMillis());
-	}
 }

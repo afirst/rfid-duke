@@ -8,6 +8,8 @@ import javax.swing.*;
 
 import smarthome.rfid.LRX201Adapter;
 import smarthome.rfid.LRX201AdapterListener;
+import smarthome.rfid.data.RSSIReading;
+import smarthome.rfid.service.RSSITracker;
 
 import java.util.*;
 
@@ -15,6 +17,7 @@ public class DemoMain {
 	
 	private static int currentRSSI = 0;
 	private static Queue<Integer> prevRSSI = new LinkedList<Integer>();
+	private static RSSITracker tracker = new RSSITracker(5, 10000);
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -37,8 +40,13 @@ public class DemoMain {
 		
 		final DemoView tv = new DemoView(null);
 		LRX201Adapter adapter = new LRX201Adapter(myIdentifier, new LRX201AdapterListener() {
-			public void readTag(int antennaID, int tagID, int rssi) {
-				if (tagID == 191) {
+			public void readTag(int antennaID, int tagID, int rssi) {				
+				DemoMain.this.tracker.logRssi(tagID, antennaID, new RSSIReading(rssi));
+				int[] tags = tracker.getTags();
+				for (int tag : tags) {
+					System.out.println(tag + " : " + tracker.getSignalStrength(tag));
+				}
+				/*if (tagID == tagID) {
 					System.out.println("Read tag: Antenna: " + antennaID + ", Tag: " + tagID + ", RSSI: " + rssi);
 					prevRSSI.add(rssi);
 					if (prevRSSI.size() > 2) {
@@ -58,14 +66,17 @@ public class DemoMain {
 						DemoMain.currentRSSI = rssi;
 						tv.update();
 					}									
-				}
+				}*/
 			}
 		});
+	
+		//adapter.setReceiverGain(255, 255, 2, true);
 		
 		//adapter.resetNetwork();
 		//adapter.disableAutoPolling();
-		adapter.enableAutoPolling();
-		
+		//adapter.enableAutoPolling();
+		//adapter.disableAutoPolling();
+		adapter.start(5);
 		tv.setVisible(true);
 	}
 	public static int getCurrentRSSI() {

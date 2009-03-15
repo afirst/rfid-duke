@@ -32,7 +32,7 @@ public class CollectorMain {
 				model.updateSignalStrength(tagID, rssi);
 			}
 		});
-		adapter.enableAutoPolling();
+		adapter.start(5);
 		adapter.setReceiverGain(true);
 	}
 }

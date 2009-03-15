@@ -58,8 +58,8 @@ public class LocationService implements LRX201AdapterListener {
 		
 		// begin tracking
 		database = new DatabaseUpdater();
-		rssiTracker = new RSSITracker(antennas, maxInterval);
-		adapter.enableAutoPolling();	
+		rssiTracker = new RSSITracker(antennas.size(), maxInterval);
+		adapter.start(5);	
 		updateTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
