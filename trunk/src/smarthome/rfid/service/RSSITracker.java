@@ -10,12 +10,12 @@ import smarthome.rfid.data.Vector;
 
 public class RSSITracker {
 	private Map<Integer, Map<Integer, RSSIReading>> data;
-	private AntennaList antennas;
+	private int numAntennas;
 	private int maxInterval;
 	
-	public RSSITracker(AntennaList antennas, int maxInterval) {
+	public RSSITracker(int numAntennas, int maxInterval) {
 		this.data = new TreeMap<Integer, Map<Integer, RSSIReading>>();
-		this.antennas = antennas;
+		this.numAntennas = numAntennas;
 		this.maxInterval = maxInterval;
 	}
 	
@@ -28,13 +28,13 @@ public class RSSITracker {
 	
 	public Vector getSignalStrength(int tagId) {
 		Map<Integer, RSSIReading> readings = data.get(tagId);		
-		double[] rssi = new double[antennas.size()];
+		double[] rssi = new double[numAntennas];
 		if (readings == null) return new Vector(rssi);
 		long time = System.currentTimeMillis();
 		for (Integer antennaId : readings.keySet()) {
 			RSSIReading reading = readings.get(antennaId);
 			if (time - reading.time() <= maxInterval) {
-				rssi[antennaId] = reading.rssi();
+				rssi[antennaId - 1] = reading.rssi();
 			}
 		}
 		return new Vector(rssi);
