@@ -12,3 +12,4 @@ public class Settings {
 	// 1206 south
 	// 1251 west
 }
+

@@ -4,12 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.*; 
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+
+import smarthome.rfid.data.RSSIReading;
+import smarthome.rfid.data.TrainingPoint;
+import smarthome.rfid.data.Vector;
 
 
 
@@ -58,11 +64,11 @@ public class CollectorDialog extends JFrame {
 	private void refresh() {
 		    
 			dataModel.clear();
-			Iterator<DataTuple> iterator = myModel.iterator();
+			Iterator<TrainingPoint> iterator = myModel.iterator();
 	                
 	        while (iterator.hasNext()){
-	        	DataTuple temp = iterator.next();
-	        	if (temp.getX()==(myPoint.x) && temp.getY() == (myPoint.y)) {
+	        	TrainingPoint temp = iterator.next();
+	        	if ((int)temp.location().x()==(myPoint.x) && (int)temp.location().y() == (myPoint.y)) {
 	        		dataModel.addElement(temp.toString());
 	        	}
 	        }
@@ -89,9 +95,7 @@ public class CollectorDialog extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				int index = dataModelList.getSelectedIndex();
-				String temp = (String) dataModel.get(index);
-				DataTuple tuple = new DataTuple (temp);
-				myModel.removeData(tuple);
+				myModel.removeAt(index);				
 				refresh(); 
 			}
 		});
@@ -109,7 +113,10 @@ public class CollectorDialog extends JFrame {
 						addPoint();
 						refresh();
 						count++;
+						System.out.println(count);
 						if (count == Settings.NUM_READINGS) {
+							System.out.println(count);
+							System.out.println(count);
 							CollectorDialog.this.setEnabled(true);
 							CollectorDialog.this.setVisible(false);
 							t.stop();
@@ -135,8 +142,9 @@ public class CollectorDialog extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String s = "<html><body>";
 				for (int tag : Settings.TAG_NUMBER) {
-					int rssi = myModel.getRSSI(tag);
-					s += "Tag " + tag + ": " + rssi + "<br>";
+					Vector rssi = myModel.getRSSI(tag);
+					s += "Tag: " + tag + ": " + rssi;
+					s += "<br>";
 				}
 				s += "</body></html>";
 				rssiInfo.setText(s);
@@ -150,11 +158,8 @@ public class CollectorDialog extends JFrame {
 			int x = myPoint.x;
 			int y = myPoint.y;
 			int floor = Settings.FLOOR;
-			int readerNumber = Settings.READER_NUMBER;
 			int tagNumber = Settings.TAG_NUMBER[orientation];
-			int signalStrength = myModel.getRSSI(tagNumber);
-			DataTuple tuple = new DataTuple(x, y, floor, orientation, readerNumber, tagNumber, signalStrength, (int)System.currentTimeMillis());
-			myModel.addData(tuple);
+			myModel.logPoint(x, y, floor, orientation, tagNumber);			
 		}
 	}
 }

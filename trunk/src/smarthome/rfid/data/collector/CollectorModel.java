@@ -1,8 +1,15 @@
 package smarthome.rfid.data.collector;
+
+import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.util.*;
 
+import smarthome.rfid.data.Location;
 import smarthome.rfid.data.RSSIReading;
-
+import smarthome.rfid.data.TrainingPoint;
+import smarthome.rfid.data.TrainingPointList;
+import smarthome.rfid.service.RSSITracker;
+import smarthome.rfid.data.Vector;
 
 
 /*
@@ -13,84 +20,60 @@ import smarthome.rfid.data.RSSIReading;
 
 public class CollectorModel {
 
-	public TreeMap<Integer, RSSIReading> ssMap = new TreeMap<Integer, RSSIReading>();
-	private ArrayList <DataTuple> myData = new ArrayList <DataTuple> (); 
-	private int currentSignalStrength; 
-	
-	public CollectorModel () {
-		myData.clear(); 
+	private int numAntennas;
+	private RSSITracker tracker;
+	private TrainingPointList list;
+
+	public CollectorModel (int numAntennas) {
+		this.numAntennas = numAntennas;
+		tracker = new RSSITracker(numAntennas, Settings.POLL_INTERVAL);		
+		list = new TrainingPointList();
 	}
 	
-	public synchronized boolean addData (DataTuple data) {
-//		Iterator <DataTuple> iterator = myData.iterator(); 
+	public synchronized void clear() {
+		tracker = new RSSITracker(numAntennas, 5000);
+	}
+	
+	public synchronized void log(int tagId, int antennaId, int rssi) {
+		tracker.logRssi(tagId, antennaId, new RSSIReading(rssi));
+	}
+	
+	public synchronized void logPoint(int x, int y, int floor, int orientation, int tagNumber) {
+		Vector ss = tracker.getSignalStrength(tagNumber);		
+		TrainingPoint pt = new TrainingPoint(new Location(x, y, floor), orientation, ss);
+		list.add(pt);		
+	}
+	
+	public synchronized void clearPoints() {
+		list.clear();		
+	}
 		
-		//while (iterator.hasNext()) {
-//			if (data.equals(iterator.next())){
-				//return false; 
-			//}
-		//}
-		
-		System.out.println("Data added");
-		myData.add(data);
-		return true; 
-	}
-	
-	public synchronized void removeData (DataTuple data) {
-		for (int i = 0; i < myData.size(); i++) {
-			if (data.equals(myData.get(i))){
-				myData.remove(i);
-				break; 
-			}
-		}
-	}
-	
-	public Iterator<DataTuple> iterator () {
-		return myData.iterator();
-	}
-	
-	public synchronized void clear () {
-		myData.clear();
-	}
-	
-	public synchronized void printMap () {
-		Iterator <DataTuple> iterator = myData.iterator(); 
-		
-		while (iterator.hasNext()) {
-			System.out.println(iterator.toString());
-		}
-	}
-	
 	public synchronized void loadFile (String file) {
-		Iterator <String> iterator = FileIO.read(file);
-		while (iterator.hasNext()) {
-			DataTuple tempTuple = new DataTuple(iterator.next());
-			myData.add(tempTuple);
-		}
+		list.clear();
+		try {
+			list.load(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	public synchronized void outputToFile (String file) {
-		String [] data = new String [myData.size()];
-		for (int i = 0; i < myData.size(); i++) {
-			data[i] = myData.get(i).toString();
-		}
-		FileIO.write(file, data);
+		try {
+			list.save(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}		
+	}	
+	
+	public synchronized void removeAt(int index) {
+		list.remove(index);
 	}
 	
-	public int getSize() {
-		return myData.size(); 
+	public Iterator<TrainingPoint> iterator() {
+		return list.iterator();
 	}
 	
-	public void updateSignalStrength(int tagId, int signalstrength) {
-		ssMap.put(tagId, new RSSIReading(signalstrength));
-	}
-	
-	public int getRSSI(int tagId) {
-		if (!ssMap.containsKey(tagId))
-			return 0;
-		RSSIReading r = ssMap.get(tagId);
-		if (System.currentTimeMillis() - r.time() > Settings.POLL_INTERVAL) {
-			return 0;
-		}
-		return r.rssi();
+	public Vector getRSSI(int tag) {
+		return tracker.getSignalStrength(tag);
 	}
 }

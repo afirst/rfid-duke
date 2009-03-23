@@ -14,6 +14,7 @@ import java.util.*;
 
 public class LRX201Adapter implements Runnable, SerialPortEventListener {
 
+	public static final int POLL_INTERVAL = 50;
 	private Thread readThread;
 	private SerialPort serialPort1;
 	private InputStream inputStream;
@@ -38,7 +39,7 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
         } catch (TooManyListenersException e) {e.printStackTrace();}
         serialPort1.notifyOnDataAvailable(true);
         try {
-            serialPort1.setSerialPortParams(115200,
+            serialPort1.setSerialPortParams(57600,
                 SerialPort.DATABITS_8,
                 SerialPort.STOPBITS_1,
                 SerialPort.PARITY_NONE);
@@ -190,9 +191,9 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 			public void run() {
 				while (running) {
 					for (int j = 1; j <= numReaders; j++) {
-						getTagPacket(0, j, j);
+						getTagPacket(0, 0, j);
 						try {
-							Thread.sleep(10);
+							Thread.sleep(POLL_INTERVAL);
 						} catch (InterruptedException e) {
 						}						
 					}

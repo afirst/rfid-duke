@@ -9,6 +9,9 @@ import java.util.*;
 import javax.imageio.*;
 import javax.swing.JPanel;
 
+import smarthome.rfid.data.Location;
+import smarthome.rfid.data.TrainingPoint;
+
 
 
 public class CollectorDisplay extends JPanel {
@@ -65,15 +68,15 @@ public class CollectorDisplay extends JPanel {
 	
 	public void reset() {
 		//Update point buffer
-		pointBuffer.clear();
-		Iterator <DataTuple> iterator = myModel.iterator();
+		/*pointBuffer.clear();		
+		Iterator <TrainingPoint> iterator = myModel.iterator();
 		
 		while (iterator.hasNext()){
-			Point point = iterator.next().getPoint(); 
+			Location point = iterator.next().location(); 
 			if(!pointBuffer.contains(point)){
-				pointBuffer.add(point);
+				pointBuffer.add(new Point((int)point.x(), (int)point.y()));
 			}
-		}
+		}	*/	
 		repaint();
 	}
 	
@@ -86,9 +89,11 @@ public class CollectorDisplay extends JPanel {
 		g.drawImage(backgroundImage, 0, 0, w, h, null);		
 		
 		// draw points
-		for (Point p : pointBuffer) {
+		Iterator<TrainingPoint> it = myModel.iterator();
+		while (it.hasNext()) {
+			TrainingPoint pt = it.next();
 			g.setColor(Color.red);
-			g.fillOval(p.x-circleSize, p.y-circleSize, circleSize*2, circleSize*2);
+			g.fillOval((int)pt.location().x()-circleSize, (int)pt.location().y()-circleSize, circleSize*2, circleSize*2);
 		}
 	}
 }
