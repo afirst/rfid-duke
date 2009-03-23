@@ -32,13 +32,12 @@ public class DemoMain {
 			System.out.println(e.getMessage());
 		}
 		Enumeration e = CommPortIdentifier.getPortIdentifiers();
-		e.nextElement();		
+		//e.nextElement();		
 		CommPortIdentifier myIdentifier = (CommPortIdentifier)e.nextElement(); // myChooser.getSelectedIdentifier();
 		System.out.println(myIdentifier.getName());
 		System.out.println(myIdentifier.getPortType());
 		System.out.println(myIdentifier.isCurrentlyOwned());
 		
-		final DemoView tv = new DemoView(null);
 		LRX201Adapter adapter = new LRX201Adapter(myIdentifier, new LRX201AdapterListener() {
 			public void readTag(int antennaID, int tagID, int rssi) {				
 				DemoMain.this.tracker.logRssi(tagID, antennaID, new RSSIReading(rssi));
@@ -77,7 +76,8 @@ public class DemoMain {
 		//adapter.enableAutoPolling();
 		//adapter.disableAutoPolling();
 		adapter.start(5);
-		tv.setVisible(true);
+		//final DemoView tv = new DemoView(null);		
+		//tv.setVisible(true);
 	}
 	public static int getCurrentRSSI() {
 		return currentRSSI;
