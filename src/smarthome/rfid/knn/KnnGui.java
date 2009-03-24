@@ -4,7 +4,7 @@
  * Created on December 17, 2005, 6:27 PM
  */
 
-package smarthome.rfid.knn;
+package smarthome.rfid.data.weka;
 
 import javax.swing.*;
 import java.io.*;

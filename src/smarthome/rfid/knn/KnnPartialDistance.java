@@ -7,7 +7,7 @@
  * @author JohnChap
  */
 
-package smarthome.rfid.knn;
+package smarthome.rfid.data.weka;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
