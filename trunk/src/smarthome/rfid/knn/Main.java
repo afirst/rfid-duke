@@ -8,7 +8,7 @@
  * Open. You can then make changes to the template in the Source Editor.
  */
 
-package smarthome.rfid.knn;
+package smarthome.rfid.data.weka;
 
 import javax.swing.*;
 
