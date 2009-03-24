@@ -5,6 +5,10 @@ import java.util.Iterator;
 public class Vector {
 	protected double[] vector;
 	
+	public Vector(int size) {
+		this(new double[size]);
+	}
+	
 	public Vector(double[] data) {
 		this.vector = data;
 	}
@@ -55,5 +59,20 @@ public class Vector {
 	
 	public double get(int index) {
 		return vector[index];
+	}
+	
+	public void add(Vector v) {
+		if (v.size() != this.size()) {
+			throw new IllegalArgumentException("Sizes don't match.");
+		}
+		for (int i = 0; i < size(); i++) {
+			vector[i] += v.vector[i];
+		}		
+	}
+	
+	public void scale(double scaleFactor) {
+		for (int i = 0; i < size(); i++) {
+			vector[i] *= scaleFactor;
+		}		
 	}
 }

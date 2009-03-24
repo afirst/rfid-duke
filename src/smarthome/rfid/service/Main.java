@@ -4,14 +4,15 @@ import javax.comm.CommPortIdentifier;
 
 import smarthome.rfid.PortChooser;
 import smarthome.rfid.data.Algorithm;
-import smarthome.rfid.data.NearestNeighborAlgorithm;
+import smarthome.rfid.data.NearestNeighbor;
+import smarthome.rfid.data.KNearestNeighbor;
 
 public class Main {
 	private static final String ANTENNA_FILE = "";
 	private static final String TRAINING_DATA_FILE = "";
 	private static final int MAX_INTERVAL = 5000;
 	private static final int UPDATE_INTERVAL = 5000;
-	private static final Algorithm ALGORITHM = new NearestNeighborAlgorithm();
+	private static final Algorithm ALGORITHM = new KNearestNeighbor(4);
 	private static final CommPortIdentifier PORT = PortChooser.selectPort();
 	private static final LocationServiceListener LISTENER = new LocationServiceListener() {
 		public void serviceEvent(String detail, int eventType) {

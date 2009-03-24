@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="smarthome/rfid/data/KNNExperiments.java|smarthome/rfid/knn/KnnGui.java|smarthome/rfid/knn/Main.java" kind="src" path="src"/>
+	<classpathentry excluding="smarthome/rfid/data/KNNExperiments.java|smarthome/rfid/knn/KnnGui.java|smarthome/rfid/knn/Main.java|smarthome/rfid/test/data/KNNExperiments.java|smarthome/rfid/data/weka/KnnGui.java|smarthome/rfid/data/weka/Main.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="comm.jar"/>
