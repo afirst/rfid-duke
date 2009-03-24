@@ -3,41 +3,25 @@ package smarthome.rfid.data;
 import java.awt.Point;
 
 public class RFIDMath {
-	public static double getDifference (double x, double y) {
-		double difference = x - y; 
-		difference = Math.pow(difference, 2); 
-		
-		//System.out.println("Distance is "+ difference);
-		
-		return difference; 
-	}
 	
-	public static double getDistance (double[] numbers) {
-		double sum = 0; 
-		
-		for (int i =0; i < numbers.length; i++) {
-			sum = sum + numbers[i]; 
-		}
-		
-		double distance = Math.sqrt(sum);
-		
-		//System.out.println("Average is "+ distance);
-		
-		return distance; 
-	}
-	
-	public static double getWeight (double[] x, double[] y) {
-		double[] distances = new double[y.length]; 
-		
+	public static double getDistance (double[] x, double[] y) {
+		double distance = 0;
 		for (int i = 0; i < y.length; i++) {
-			distances[i] = RFIDMath.getDifference(x[i], y[i]);
+			distance += (x[i] - y[i]) * (x[i] - y[i]);
 		}
-		
-		double weight = RFIDMath.getDistance(distances);
-		
-		//System.out.println("Weight is "+weight);
-		
-		return weight; 
+		return Math.sqrt(distance);
+	}
+	public static double getDistance (Vector x, Vector y) {
+		return getDistance(x.data(), y.data());
+	}
+	
+	public static Vector average(Vector[] vectors) {
+		Vector a = new Vector(vectors[0].size());
+		for (int i = 0; i < vectors.length; i++) {
+			a.add(vectors[i]);
+		}
+		a.scale(1.0 / vectors.length);
+		return a;
 	}
 	
 	public Point centroidOfTriangle(Point one, Point two, Point three) {
