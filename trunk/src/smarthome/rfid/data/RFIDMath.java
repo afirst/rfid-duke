@@ -70,4 +70,21 @@ public class RFIDMath {
 				
 		return intersectionOfTwoLines(bimedian1, bimedian2, bimedian3, bimedian4);
 	}
+	
+	public static double mean(Vector v) {
+		double u = 0;
+		for (int i = 0; i < v.size(); i++) {
+			u += v.vector[i];
+		}
+		return u / v.size();
+	}
+	
+	public static double stdev(Vector v) {
+		double u = mean(v);
+		double s = 0;
+		for (int i = 0; i < v.size(); i++) {
+			s += Math.pow((v.vector[i] - u), 2);
+		}
+		return Math.sqrt(s / v.size());
+	}
 }

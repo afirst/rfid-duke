@@ -54,7 +54,7 @@ public class LocationService implements LRX201AdapterListener {
 			logEvent("ERROR: Training data file not found.", LocationServiceListener.ERROR);
 			return;
 		}
-		algorithm.setTrainingData(trainingData, antennas);
+		algorithm.setTrainingData(trainingData);
 		
 		// begin tracking
 		database = new DatabaseUpdater();

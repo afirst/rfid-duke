@@ -19,11 +19,11 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 			double x = Double.parseDouble(l[0]);
 			double y = Double.parseDouble(l[1]);
 			double z= Double.parseDouble(l[2]);
-			double o = Double.parseDouble(l[3]);
+			double o = Double.parseDouble(l[3]);			
 			
 			double[] signalStrengths = new double[l.length - 4];
 			for (int i = 0; i < signalStrengths.length; i++) {
-				signalStrengths[i] = Double.parseDouble(l[3 + i]);
+				signalStrengths[i] = Double.parseDouble(l[4 + i]);
 			}
 			
 			this.add(new TrainingPoint(new Location(x, y, z), o, new Vector(signalStrengths)));
