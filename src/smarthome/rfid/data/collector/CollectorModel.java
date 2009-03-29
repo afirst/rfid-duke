@@ -38,7 +38,7 @@ public class CollectorModel {
 		tracker.logRssi(tagId, antennaId, new RSSIReading(rssi));
 	}
 	
-	public synchronized void logPoint(int x, int y, int floor, int orientation, int tagNumber) {
+	public synchronized void logPoint(double x, double y, int floor, int orientation, int tagNumber) {
 		Vector ss = tracker.getSignalStrength(tagNumber);		
 		TrainingPoint pt = new TrainingPoint(new Location(x, y, floor), orientation, ss);
 		list.add(pt);		

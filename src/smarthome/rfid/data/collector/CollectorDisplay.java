@@ -37,20 +37,21 @@ public class CollectorDisplay extends JPanel {
 			e.printStackTrace();
 		}
 		
-		this.setPreferredSize(new Dimension(1116, 322));
-		this.setMinimumSize(new Dimension(1116, 322));
+		this.setPreferredSize(new Dimension(837, 249));
+		this.setMinimumSize(new Dimension(837, 249));
 		this.setBackground(Color.yellow);
 		this.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				Point p = arg0.getPoint();
 				for (int i =0; i < pointBuffer.size(); i++){
-					double distance = p.distance(pointBuffer.get(i));
+					double distance = p.distance(pointBuffer.get(i))*CollectorDisplay.this.getWidth();
 						if (distance <= circleSize) {
 							//change p into previous point
 							p = pointBuffer.get(i); 
 						}		
 					}
-				CollectorDialog dialogue = new CollectorDialog(myModel, p, myDisplay);
+				
+				CollectorDialog dialogue = new CollectorDialog(myModel, p, myDisplay, CollectorDisplay.this.getWidth());
 			}
 			
 			public void mouseEntered(MouseEvent arg0) {
@@ -92,8 +93,10 @@ public class CollectorDisplay extends JPanel {
 		Iterator<TrainingPoint> it = myModel.iterator();
 		while (it.hasNext()) {
 			TrainingPoint pt = it.next();
+			double x = pt.location().x() * w;
+			double y = pt.location().y() * w;
 			g.setColor(Color.red);
-			g.fillOval((int)pt.location().x()-circleSize, (int)pt.location().y()-circleSize, circleSize*2, circleSize*2);
+			g.fillOval((int)x-circleSize, (int)y-circleSize, circleSize*2, circleSize*2);
 		}
 	}
 }

@@ -7,16 +7,14 @@ import java.util.Map.Entry;
 
 public class KNearestNeighbor implements Algorithm {
 	private TrainingPointList trainingData; 
-	private AntennaList antennaLocations; 
 	private int k;
 	
 	public KNearestNeighbor(int k) {
 		this.k = k;
 	}
 	
-	public KNearestNeighbor(TrainingPointList trainingData, AntennaList antennas) {
+	public KNearestNeighbor(TrainingPointList trainingData) {
 		this.trainingData = trainingData; 
-		this.antennaLocations = antennas; 
 	}
 	
 	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
@@ -39,8 +37,7 @@ public class KNearestNeighbor implements Algorithm {
 		return result;
 	}
 
-	public void setTrainingData(TrainingPointList trainingData, AntennaList antennas) {
+	public void setTrainingData(TrainingPointList trainingData) {
 		this.trainingData = trainingData; 
-		this.antennaLocations = antennas;
 	}	
 } 

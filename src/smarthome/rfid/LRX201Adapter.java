@@ -14,7 +14,7 @@ import java.util.*;
 
 public class LRX201Adapter implements Runnable, SerialPortEventListener {
 
-	public static final int POLL_INTERVAL = 50;
+	private int POLL_INTERVAL = 37;
 	private Thread readThread;
 	private SerialPort serialPort1;
 	private InputStream inputStream;
@@ -185,12 +185,14 @@ public class LRX201Adapter implements Runnable, SerialPortEventListener {
 		return true;
 	}	*/
 			
+	//private Queue<Long> latestReads;
+	//private Queue<Long> latest;
 	public void start(final int numReaders) {
 		running = true;
 		new Thread(new Runnable() {
 			public void run() {
 				while (running) {
-					for (int j = 1; j <= numReaders; j++) {
+					for (int j = 1; j <= numReaders; j++) {						
 						getTagPacket(0, 0, j);
 						try {
 							Thread.sleep(POLL_INTERVAL);

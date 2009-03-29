@@ -18,7 +18,7 @@ import smarthome.rfid.PortChooser;
 import java.util.*;
 
 public class CollectorMain {
-	private static final int NUM_ANTENNAS = 4;
+	private static final int NUM_ANTENNAS = 5;
 	
 	public static void main(String[] args) {				
 		final CollectorModel model = new CollectorModel(NUM_ANTENNAS); 

@@ -42,10 +42,13 @@ public class CollectorDialog extends JFrame {
 	private JButton deleteButton;
 	private JLabel rssiInfo;
 	
-	public CollectorDialog(CollectorModel model, Point point, CollectorDisplay display){
+	private double w;
+	
+	public CollectorDialog(CollectorModel model, Point point, CollectorDisplay display, int w){
         myModel = model; 
 		myPoint = point; 		
-		myDisplay = display; 
+		myDisplay = display;
+		this.w = w;
 		
 		dataModel = new DefaultListModel(); 
 		dataModelList = new JList(dataModel);
@@ -61,6 +64,13 @@ public class CollectorDialog extends JFrame {
         setVisible(true);
     }
 	
+	private double x() {
+		return 1.0 * myPoint.x / w;
+	}
+	private double y() {
+		return 1.0 * myPoint.y / w;
+	}
+	
 	private void refresh() {
 		    
 			dataModel.clear();
@@ -68,7 +78,7 @@ public class CollectorDialog extends JFrame {
 	                
 	        while (iterator.hasNext()){
 	        	TrainingPoint temp = iterator.next();
-	        	if ((int)temp.location().x()==(myPoint.x) && (int)temp.location().y() == (myPoint.y)) {
+	        	if ((int)temp.location().x()==x() && (int)temp.location().y() == y()) {
 	        		dataModel.addElement(temp.toString());
 	        	}
 	        }
@@ -83,7 +93,7 @@ public class CollectorDialog extends JFrame {
         JPanel content = (JPanel) getContentPane();  
         
         rssiInfo = new JLabel();
-        
+        rssiInfo.setPreferredSize(new Dimension(450, 150));
         dataSetPane = new JScrollPane(dataModelList);
 		dataSetPane.setBorder(BorderFactory.createTitledBorder("Data at this point"));
 		dataSetPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -155,8 +165,8 @@ public class CollectorDialog extends JFrame {
 	
 	private void addPoint() {
 		for (int orientation = 0; orientation < Settings.TAG_NUMBER.length; orientation++) {
-			int x = myPoint.x;
-			int y = myPoint.y;
+			double x = x();
+			double y = y();
 			int floor = Settings.FLOOR;
 			int tagNumber = Settings.TAG_NUMBER[orientation];
 			myModel.logPoint(x, y, floor, orientation, tagNumber);			
