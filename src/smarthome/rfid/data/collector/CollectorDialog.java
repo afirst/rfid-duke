@@ -78,7 +78,7 @@ public class CollectorDialog extends JFrame {
 	                
 	        while (iterator.hasNext()){
 	        	TrainingPoint temp = iterator.next();
-	        	if ((int)temp.location().x()==x() && (int)temp.location().y() == y()) {
+	        	if (Math.abs(temp.location().x()-x()) < 0.01 && Math.abs(temp.location().y() -y()) < 0.01) {
 	        		dataModel.addElement(temp.toString());
 	        	}
 	        }
