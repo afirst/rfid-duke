@@ -45,11 +45,11 @@ public class CollectorDisplay extends JPanel {
 				Point p = arg0.getPoint();
 				for (int i =0; i < pointBuffer.size(); i++){
 					double distance = p.distance(pointBuffer.get(i))*CollectorDisplay.this.getWidth();
-						if (distance <= circleSize) {
-							//change p into previous point
-							p = pointBuffer.get(i); 
-						}		
-					}
+					if (distance <= circleSize) {
+						//change p into previous point
+						p = pointBuffer.get(i); 
+					}		
+				}
 				
 				CollectorDialog dialogue = new CollectorDialog(myModel, p, myDisplay, CollectorDisplay.this.getWidth());
 			}

@@ -2,6 +2,7 @@ package smarthome.rfid.data.collector;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,8 +16,9 @@ import javax.swing.event.ListDataListener;
 
 import smarthome.rfid.data.RSSIReading;
 import smarthome.rfid.data.TrainingPoint;
+import smarthome.rfid.data.U;
 import smarthome.rfid.data.Vector;
-
+import smarthome.rfid.data.Location;
 
 
 /**
@@ -65,9 +67,11 @@ public class CollectorDialog extends JFrame {
     }
 	
 	private double x() {
+	
 		return 1.0 * myPoint.x / w;
 	}
 	private double y() {
+	
 		return 1.0 * myPoint.y / w;
 	}
 	
@@ -150,11 +154,19 @@ public class CollectorDialog extends JFrame {
 		new Timer(100, new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				Location loc = new Location(x(),y(),Settings.FLOOR);
 				String s = "<html><body>";
 				for (int tag : Settings.TAG_NUMBER) {
 					Vector rssi = myModel.getRSSI(tag);
 					s += "Tag: " + tag + ": " + rssi;
 					s += "<br>";
+				}
+				s += "(Point Location: " + x() + "," + y() + ")<br>";
+				try {
+					s += "Room it belongs: " + loc.getRoom();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				s += "</body></html>";
 				rssiInfo.setText(s);
