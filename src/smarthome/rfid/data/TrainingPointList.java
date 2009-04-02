@@ -26,7 +26,7 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 				signalStrengths[i] = Double.parseDouble(l[4 + i]);
 			}
 			
-			this.add(new TrainingPoint(new Location(x, y, z), o, new Vector(signalStrengths)));
+			this.add(new TrainingPoint(new Location(x, y, z), o, new SignalStrength(signalStrengths)));
 		
 		}
 		s.close();
