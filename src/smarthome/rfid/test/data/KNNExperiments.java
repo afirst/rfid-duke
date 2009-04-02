@@ -1,4 +1,4 @@
-package smarthome.rfid.data;
+package smarthome.rfid.test.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,8 +27,6 @@ public class KNNExperiments {
 		return all_points_list;
 	}
 		
-	public 
-	
 	public void main() {
 		KNearestNeighbors knn = new KNearestNeighbors();
 		Scanner s1 = knn.makeScanner(knn.ReadFile(KNearestNeighbors.CONTROL_ADDRESS));
@@ -51,7 +49,8 @@ public class KNNExperiments {
 	}
 	
 	public static void main(String arg[]) {
-		main();
+		KNNExperiments e = new KNNExperiments();
+		e.main();
 	}
 
 }

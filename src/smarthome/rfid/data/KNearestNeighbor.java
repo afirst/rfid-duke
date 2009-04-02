@@ -13,10 +13,6 @@ public class KNearestNeighbor implements Algorithm {
 		this.k = k;
 	}
 	
-	public KNearestNeighbor(TrainingPointList trainingData) {
-		this.trainingData = trainingData; 
-	}
-	
 	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
 		TreeMap<Double, TrainingPoint> distances = new TreeMap<Double, TrainingPoint>(); 		
 		for (TrainingPoint pt : trainingData) {

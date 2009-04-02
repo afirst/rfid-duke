@@ -45,7 +45,7 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 			out.print(pt.orientation());			
 			for (int i = 0; i < pt.signalStrength().size(); i++) {
 				out.print(",");
-				out.print(pt.signalStrength().data()[i]);
+				out.print(pt.signalStrength().get(i));
 			}
 			out.println();
 		}		

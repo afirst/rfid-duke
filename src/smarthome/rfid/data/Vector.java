@@ -1,20 +1,30 @@
 package smarthome.rfid.data;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
-public class Vector {
-	protected double[] vector;
+public class Vector implements Iterable<Double> {
+	protected Double[] vector;
 	
 	public Vector(int size) {
-		this(new double[size]);
+		this(new Double[size]);
 	}
 	
 	public Vector(double[] data) {
-		this.vector = data;
+		Double[] arr = new Double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			arr[i] = data[i];
+		}
+		this.vector = arr;
+	}
+		
+	public Vector(Double[] data) {
+		this.vector = data.clone();
 	}
 	
-	public double[] data() {
-		return vector;
+	public Vector(List<Double> data) {
+		this.vector = data.toArray(new Double[0]);
 	}
 	
 	public String toString (){
@@ -74,5 +84,13 @@ public class Vector {
 		for (int i = 0; i < size(); i++) {
 			vector[i] *= scaleFactor;
 		}		
+	}
+	
+	public Vector copy() {
+		return new Vector(vector.clone());
+	}
+
+	public Iterator<Double> iterator() {
+		return Arrays.asList(vector).iterator();
 	}
 }

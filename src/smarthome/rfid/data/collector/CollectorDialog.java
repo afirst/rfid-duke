@@ -15,6 +15,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import smarthome.rfid.data.RSSIReading;
+import smarthome.rfid.data.RoomMap;
 import smarthome.rfid.data.TrainingPoint;
 import smarthome.rfid.data.U;
 import smarthome.rfid.data.Vector;
@@ -43,6 +44,8 @@ public class CollectorDialog extends JFrame {
 	private JButton goButton;
 	private JButton deleteButton;
 	private JLabel rssiInfo;
+	
+	private RoomMap map;
 	
 	private double w;
 	
@@ -151,6 +154,13 @@ public class CollectorDialog extends JFrame {
 		content.add(dataSetPane);
 		content.add(deleteButton);		
 		
+		map = new RoomMap();
+		try {
+			map.load("room-map.txt");
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		}
+		
 		new Timer(100, new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -162,12 +172,7 @@ public class CollectorDialog extends JFrame {
 					s += "<br>";
 				}
 				s += "(Point Location: " + x() + "," + y() + ")<br>";
-				try {
-					s += "Room it belongs: " + loc.getRoom();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				s += "Room it belongs: " + map.getRoom(loc);
 				s += "</body></html>";
 				rssiInfo.setText(s);
 			}
