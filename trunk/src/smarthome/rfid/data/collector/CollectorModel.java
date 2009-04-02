@@ -6,6 +6,7 @@ import java.util.*;
 
 import smarthome.rfid.data.Location;
 import smarthome.rfid.data.RSSIReading;
+import smarthome.rfid.data.SignalStrength;
 import smarthome.rfid.data.TrainingPoint;
 import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.service.RSSITracker;
@@ -40,7 +41,7 @@ public class CollectorModel {
 	
 	public synchronized void logPoint(double x, double y, int floor, int orientation, int tagNumber) {
 		Vector ss = tracker.getSignalStrength(tagNumber);		
-		TrainingPoint pt = new TrainingPoint(new Location(x, y, floor), orientation, ss);
+		TrainingPoint pt = new TrainingPoint(new Location(x, y, floor), orientation, new SignalStrength(ss));
 		list.add(pt);		
 	}
 	
