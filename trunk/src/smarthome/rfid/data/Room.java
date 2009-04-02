@@ -1,6 +1,8 @@
 package smarthome.rfid.data;
 
 public class Room implements Comparable {
+	public static final Room OUTSIDE = new Room("Outside");
+	
 	private double x;
 	private double y;
 	private double z;

@@ -17,6 +17,7 @@ import smarthome.rfid.data.Location;
 import smarthome.rfid.data.RSSIReading;
 import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.data.Vector;
+import smarthome.rfid.data.filters.TrainingPointFilter;
 
 public class LocationService implements LRX201AdapterListener {
 	private CommPortIdentifier comPort;

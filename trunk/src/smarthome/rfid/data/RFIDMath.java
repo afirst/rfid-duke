@@ -1,18 +1,18 @@
 package smarthome.rfid.data;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RFIDMath {
 	
-	public static double getDistance (double[] x, double[] y) {
+	public static double getDistance(Vector x, Vector y) {
 		double distance = 0;
-		for (int i = 0; i < y.length; i++) {
-			distance += (x[i] - y[i]) * (x[i] - y[i]);
+		for (int i = 0; i < y.size(); i++) {
+			distance += (x.get(i) - y.get(i)) * (x.get(i) - y.get(i));
 		}
 		return Math.sqrt(distance);
-	}
-	public static double getDistance (Vector x, Vector y) {
-		return getDistance(x.data(), y.data());
 	}
 	
 	public static Vector average(Vector[] vectors) {
@@ -77,14 +77,56 @@ public class RFIDMath {
 			u += v.vector[i];
 		}
 		return u / v.size();
-	}
+	}	
 	
-	public static double stdev(Vector v) {
+	public static double variance(Vector v) {
 		double u = mean(v);
 		double s = 0;
 		for (int i = 0; i < v.size(); i++) {
 			s += Math.pow((v.vector[i] - u), 2);
 		}
-		return Math.sqrt(s / v.size());
+		return s / v.size();
+	}
+	
+	public static double stdev(Vector v) {
+		return Math.sqrt(variance(v));
+	}
+	
+	public static double mode(Vector v) {
+		Vector sorted = v.copy();
+		Arrays.sort(sorted.vector);
+		double prev = Double.NaN;
+		int count = 1;
+		int maxCount = 0;
+		List<Double> max = new ArrayList<Double>();
+		for (int i = 0; i < v.size(); i++) {
+			double d = sorted.vector[i];
+			if (prev == d) {
+				count++;				
+			}
+			else {				
+				prev = d;
+				count = 1;
+			}
+			if (count > maxCount) {
+				maxCount = count;
+				max.clear();
+				max.add(d);
+			}
+			else if (count == maxCount) {
+				max.add(d);
+			}
+		}		
+		return mean(new Vector(max));
+	}
+	
+	public static Vector removeAll(Vector v, double remove) {
+		List<Double> result = new ArrayList<Double>();
+		for (double d : v.vector) {
+			if (d != remove) {
+				result.add(d);
+			}
+		}
+		return new Vector(result);
 	}
 }

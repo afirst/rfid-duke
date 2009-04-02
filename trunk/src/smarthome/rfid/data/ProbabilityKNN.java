@@ -15,9 +15,8 @@ public class ProbabilityKNN {
 	public double computeDistance(Location prior, String[] controlSignal, String[] testSignal) {
 		//controlSignal has both location
 		double dist = 0.0;
-		double[] pr = prior.data();
 		double[] con = toDouble(controlSignal);
-		dist = (pr[0]-con[0])*(pr[0]-con[0]) + (pr[1]-con[1])*(pr[1]-con[1]) + (pr[2]*80-con[2]*80)*(pr[2]*80-con[2]*80);
+		dist = (prior.get(0)-con[0])*(prior.get(0)-con[0]) + (prior.get(1)-con[1])*(prior.get(1)-con[1]) + (prior.get(2)*80-con[2]*80)*(prior.get(2)*80-con[2]*80);
 		if (dist <= DIST) {
 			//assign infinity
 			return INF;
