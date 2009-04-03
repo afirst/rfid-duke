@@ -19,10 +19,15 @@ public class Rectangle extends Shape {
 		return contains(location.x(), location.y(), location.z());
 	}
 
-	public boolean contains(double x, double y, double z) {
+	public boolean exactContains(double x, double y, double z) {
 		return (this.x1<=x && x<=this.x2) 
 				&& (this.y1<=y && y<=this.y2) 
 				&& (this.z==z);
+	}
+	
+	public boolean contains(double x, double y, double z) {
+		if (z<=1.5) return exactContains(x,y,1);
+		return exactContains(x,y,2);
 	}
 
 	public String toString() {
