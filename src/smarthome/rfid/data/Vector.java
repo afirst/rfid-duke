@@ -49,7 +49,7 @@ public class Vector implements Iterable<Double> {
 		Vector v = (Vector)obj;
 		if (v.vector.length != vector.length) return false;
 		for (int i = 0; i < vector.length; i++) {
-			if (vector[i] != v.vector[i]) return false;
+			if (Math.abs(vector[i] - v.vector[i]) > 0.0001) return false;
 		}
 		return true;
 	}

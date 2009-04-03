@@ -23,7 +23,7 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 			
 			double[] signalStrengths = new double[l.length - 4];
 			for (int i = 0; i < signalStrengths.length; i++) {
-				signalStrengths[i] = processDouble(l[4 + i]);
+				signalStrengths[i] = Double.parseDouble(l[4 + i]);
 			}
 			
 			this.add(new TrainingPoint(new Location(x, y, z), o, new SignalStrength(signalStrengths)));
@@ -32,14 +32,10 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 		s.close();
 	}
 	
-	public double processDouble(String str) {
-		double x = Double.parseDouble(str);
-		return x>=60?x-60:x;
-	}
-	
 	public void save(String filename) throws FileNotFoundException {
 		File f = new File(filename);
-		PrintWriter out = new PrintWriter(f);		
+		PrintWriter out = new PrintWriter(f);
+		RoomMap roomMap = new RoomMap();
 		for (TrainingPoint pt : this) {
 			out.print(pt.location().x());
 			out.print("\t");
@@ -47,15 +43,22 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 			out.print("\t");
 			out.print(pt.location().z());
 			out.print("\t");
-			out.print(pt.orientation());			
+			out.print(pt.orientation());
+			if (pt.signalStrength().variance() != Double.NaN) {
+				out.print("\t");
+				out.print(pt.signalStrength().variance());
+			}
 			for (int i = 0; i < pt.signalStrength().size(); i++) {
 				out.print("\t");
 				out.print(pt.signalStrength().get(i));
 			}
 			out.print("\t");
-			out.print(pt.location().getRoom());
+			out.print(roomMap.getRoom(pt.location()));
 			out.println();
 		}		
 		out.close();
 	}
+	
+
+	
 }

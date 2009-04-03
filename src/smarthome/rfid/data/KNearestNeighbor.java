@@ -25,11 +25,6 @@ public class KNearestNeighbor implements Algorithm {
 		result.scale(1.0 / k);
 		return result;
 	}
-
-	public Room getRoom(int tagId, Vector signalStrength) throws FileNotFoundException {
-		Location location = getLocation(tagId, signalStrength);
-		return location.getRoom();
-	}
 	
 	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
 		TreeMap<Double, TrainingPoint> distances = new TreeMap<Double, TrainingPoint>(); 		
