@@ -1,5 +1,6 @@
 package smarthome.rfid.data.filters;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.data.Vector;
 
 public class TrainingPointMerger implements TrainingPointFilter {
+	
 	public TrainingPointList filter(TrainingPointList points) {
 		Map<Location, List<TrainingPoint>> map = new HashMap<Location, List<TrainingPoint>>();		
 		for (TrainingPoint pt : points) {
@@ -51,4 +53,13 @@ public class TrainingPointMerger implements TrainingPointFilter {
 		}
 		return newList;
 	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		TrainingPointList list = new TrainingPointList();
+		list.load("data.txt");
+		TrainingPointMerger merger = new TrainingPointMerger();
+		list = merger.filter(list);
+		list.save("mergerOutput.txt");
+	}
+	
 }
