@@ -15,10 +15,13 @@ public class DataAnalyzer implements Iterable<TrainingPoint> {
 
 	public static void main (String [] Args){
 		try {
-			DataAnalyzer analyzer = new DataAnalyzer ("formatteddata.csv");
+			DataAnalyzer analyzer = new DataAnalyzer ("data.txt");
+			int k=0;
 			for (TrainingPoint pt : analyzer) {
+				k++;
 				System.out.println(pt);
 			}
+			System.out.println(k);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,7 +36,7 @@ public class DataAnalyzer implements Iterable<TrainingPoint> {
 		
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			String[] l = line.split(",");
+			String[] l = line.split("\t");
 			double x = Double.parseDouble(l[0]);
 			double y = Double.parseDouble(l[1]);
 			double z= Double.parseDouble(l[2]);
@@ -41,7 +44,7 @@ public class DataAnalyzer implements Iterable<TrainingPoint> {
 			
 			double[] signalStrengths = new double[l.length - 4];
 			for (int i = 0; i < signalStrengths.length; i++) {
-				signalStrengths[i] = Double.parseDouble(l[3 + i]);
+				signalStrengths[i] = processDouble(l[4 + i]);
 			}
 			
 			DataList.add(new TrainingPoint(new Location(x, y, z), o, new Vector(signalStrengths)));
@@ -50,11 +53,16 @@ public class DataAnalyzer implements Iterable<TrainingPoint> {
 		s.close();
 	}
 	
+	public double processDouble(String str) {
+		double x = Double.parseDouble(str);
+		return x>=60?x-60:x;
+	}
+	
 	public Iterator<TrainingPoint> iterator() {
 		return DataList.iterator();
 	}
 	
-	public void prinToFile(String file) throws FileNotFoundException {
+	public void printToFile(String file) throws FileNotFoundException {
 
 		File f1 = new File(file);
 		PrintWriter out = new PrintWriter(f1);

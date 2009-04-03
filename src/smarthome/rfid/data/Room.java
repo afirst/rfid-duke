@@ -19,7 +19,7 @@ public class Room implements Comparable {
 	}
 	
 	public String toString() {
-		return "("+name+")";
+		return name;
 	}
 	
 	public static void main(String[] args) {

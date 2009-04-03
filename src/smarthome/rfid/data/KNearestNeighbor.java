@@ -1,5 +1,6 @@
 package smarthome.rfid.data;
 
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,14 +14,6 @@ public class KNearestNeighbor implements Algorithm {
 		this.k = k;
 	}
 	
-	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
-		TreeMap<Double, TrainingPoint> distances = new TreeMap<Double, TrainingPoint>(); 		
-		for (TrainingPoint pt : trainingData) {
-			distances.put(RFIDMath.getDistance(pt.signalStrength(), signalStrength), pt);			
-		}
-		return distances;
-	}		
-	
 	public Location getLocation(int tagId, Vector signalStrength) {			
 		TreeMap<Double, TrainingPoint> distances = createDistanceMap(signalStrength);
 		Iterator<Entry<Double, TrainingPoint>> it = distances.entrySet().iterator();
@@ -32,6 +25,19 @@ public class KNearestNeighbor implements Algorithm {
 		result.scale(1.0 / k);
 		return result;
 	}
+
+	public Room getRoom(int tagId, Vector signalStrength) throws FileNotFoundException {
+		Location location = getLocation(tagId, signalStrength);
+		return location.getRoom();
+	}
+	
+	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
+		TreeMap<Double, TrainingPoint> distances = new TreeMap<Double, TrainingPoint>(); 		
+		for (TrainingPoint pt : trainingData) {
+			distances.put(RFIDMath.getDistance(pt.signalStrength(), signalStrength), pt);			
+		}
+		return distances;
+	}		
 
 	public void setTrainingData(TrainingPointList trainingData) {
 		this.trainingData = trainingData; 
