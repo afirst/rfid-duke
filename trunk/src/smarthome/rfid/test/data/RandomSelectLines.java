@@ -8,7 +8,7 @@ public class RandomSelectLines {
 	 * you need to delete those two files if you want a new ones. 
 	 */
 	public void main(int many_times) {
-		File file = new File("data_files/database.txt");
+		File file = new File("data.txt");
 		Scanner s = null;
 		PrintStream control = null;
 		PrintStream test = null;
@@ -19,14 +19,14 @@ public class RandomSelectLines {
 			    control = new PrintStream(new FileOutputStream ("data_files\\test" + i + "\\control.txt"));
 			    test = new PrintStream(new FileOutputStream("data_files\\test" + i + "\\test.txt"));
 			} catch(FileNotFoundException e) {
-				System.out.println("File not found!");
+				System.out.println("File not found! Try again.");
 				System.exit(0);
 			}
 			while (s.hasNextLine()) {
 				String input = s.nextLine();
 				Random r = new Random();
 				Double x = r.nextDouble();
-				if (x > .70) {
+				if (x > .80) {
 					test.println (input);
 				} else {
 					control.println(input);
