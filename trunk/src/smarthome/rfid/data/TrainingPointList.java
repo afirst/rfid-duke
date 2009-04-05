@@ -36,6 +36,7 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 		File f = new File(filename);
 		PrintWriter out = new PrintWriter(f);
 		RoomMap roomMap = new RoomMap();
+		roomMap.load("room-map.txt");
 		for (TrainingPoint pt : this) {
 			out.print(pt.location().x());
 			out.print("\t");
@@ -44,7 +45,8 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 			out.print(pt.location().z());
 			out.print("\t");
 			out.print(pt.orientation());
-			if (pt.signalStrength().variance() != Double.NaN) {
+			if (pt.signalStrength().variance()!=-1) {
+				U.Print("wtf");
 				out.print("\t");
 				out.print(pt.signalStrength().variance());
 			}
@@ -58,7 +60,5 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 		}		
 		out.close();
 	}
-	
-
 	
 }

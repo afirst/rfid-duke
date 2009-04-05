@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import smarthome.rfid.data.KNearestNeighbor;
 import smarthome.rfid.data.Location;
 import smarthome.rfid.data.Room;
+import smarthome.rfid.data.RoomMap;
 import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.data.U;
 import smarthome.rfid.data.Vector;
@@ -25,7 +26,8 @@ public class KNNTest {
 		Location loc = knn.getLocation(3, signalStrength);
 		U.Print(loc);
 		U.Print("wtf");
-		U.Print(loc.getRoom());
+		RoomMap roomMap = new RoomMap();
+		U.Print(roomMap.getRoom(loc));
 	}
 	
 	public void getAllRooms() throws FileNotFoundException {
@@ -44,10 +46,11 @@ public class KNNTest {
 		test.load(TEST_ADDRESS);
 		test.save(SAVE_ADDRESS);
 		U.Print("Results......");
+		RoomMap roomMap = new RoomMap();
 		for(int i=0; i<test.size();i++) {
 			Vector signalStrength = (Vector)test.get(i).signalStrength();
 			Location loc = knn.getLocation(3, signalStrength);
-			printTestPoint(loc, loc.getRoom());
+			printTestPoint(loc, roomMap.getRoom(loc));
 		}
 		U.Print("done!");
 	}
@@ -58,7 +61,8 @@ public class KNNTest {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		KNNTest test = new KNNTest();
-		test.getKNNResults();
+		test.getAllRooms();
+		U.Print("Done!");
 	}
 
 	
