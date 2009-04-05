@@ -3,6 +3,7 @@ package smarthome.rfid.data;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class RFIDMath {
@@ -118,6 +119,25 @@ public class RFIDMath {
 			}
 		}		
 		return mean(new Vector(max));
+	}
+	
+	public static Vector[] removeAll(Vector v, Vector w, double remove) {
+		List<Double> vNew = new ArrayList<Double>();
+		List<Double> wNew = new ArrayList<Double>();
+		Iterator<Double> vit = v.iterator();
+		Iterator<Double> wIt = w.iterator();
+		while(vit.hasNext()) {
+			double d = (Double) vit.next();
+			double wToAdd = wIt.next();
+			if(d != remove) {
+				vNew.add(wToAdd);
+				wNew.add(wToAdd);
+			}
+		}
+		Vector[] ret = new Vector[2];
+		ret[0] = new Vector(vNew);
+		ret[1] = new Vector(wNew);
+		return ret;
 	}
 	
 	public static Vector removeAll(Vector v, double remove) {

@@ -1,7 +1,7 @@
 package smarthome.rfid.data;
 
 public class SignalStrength extends Vector {
-	private double v = Double.NaN;
+	private double v = -1;
 	
 	public SignalStrength(double[] data) {
 		super(data);
@@ -31,5 +31,11 @@ public class SignalStrength extends Vector {
 		int h = super.hashCode();
 		h += new Double(v).hashCode();
 		return h;
+	}
+	
+	public static void main(String[] args) {
+		double[] data = {2,3,6,2};
+		SignalStrength s= new SignalStrength(data);
+		U.Print(s.variance()==-1);
 	}
 }
