@@ -26,7 +26,9 @@ public class RegressionAlgorithm implements Algorithm{
 			yEstimates.add(yHat);
 			zEstimates.add(zHat);
 		}
-		return new Location(getAverage(xEstimates), getAverage(yEstimates), getAverage(zEstimates));
+		return new Location(weighted(signalStrength, xEstimates), weighted(
+				signalStrength, yEstimates), weighted(signalStrength,
+				zEstimates));
 	}
 	
 	public Double getAverage(ArrayList<Double> list) {
@@ -35,6 +37,24 @@ public class RegressionAlgorithm implements Algorithm{
 			sum += list.get(i);
 		}
 		return sum / list.size();
+	}
+	
+	/**
+	 * Weighted by signals
+	 * @param signals
+	 * @param estimates
+	 * @return
+	 */
+	public Double weighted(Vector signals, ArrayList<Double> estimates) {
+		double sum = 0; 
+		for(int i=0; i<signals.size(); i++) {
+			sum += signals.get(i);
+		}
+		double ret = 0; 
+		for (int i=0; i<estimates.size(); i++) {
+			ret += estimates.get(i) * (signals.get(i) / sum); 
+		}
+		return ret;
 	}
 	
 	public double evaluate(Function function, double x) {
