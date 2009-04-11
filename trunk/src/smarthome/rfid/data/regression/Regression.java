@@ -8,6 +8,10 @@ public class Regression {
 
 	      // do a simple equation: Y = 1 + 2X
 	      double rawData[][] = {{1, 0}, {3, 1}, {5, 2}};
+	      for(int i=0; i<rawData[0].length; i++) {
+	    	  System.out.println("wtf"+rawData[0][i]);
+	      }
+	      
 	      double coef[] = linear_equation(rawData, 1);
 	      print_equation(coef);
 

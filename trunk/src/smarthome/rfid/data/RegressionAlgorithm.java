@@ -2,43 +2,51 @@ package smarthome.rfid.data;
 
 import java.util.ArrayList;
 
+import smarthome.rfid.data.regression.Function;
+import smarthome.rfid.data.regression.FunctionList;
+
 public class RegressionAlgorithm implements Algorithm{
+	private FunctionList list; 
 	private TrainingPointList data;
 	
-	/**
-	 * Get x,y,z,s1,s2,s3,s4,s5 vectors
-	 * @param data
-	 * @return
-	 */
-	public ArrayList<double[]> getVectors(TrainingPointList data) {
-		int dim = data.size();
-		double[] x = new double[dim];
-		double[] y = new double[dim];
-		double[] z = new double[dim];
-		double[] s1 = new double[dim];
-		double[] s2 = new double[dim];
-		double[] s3 = new double[dim];
-		double[] s4 = new double[dim];
-		double[] s5 = new double[dim];
+	public RegressionAlgorithm(int order) {
+		list = new FunctionList(data, order);
+		list.loadAllFunctions(order);
+	}
 
-		for (int i=0; i<data.size();i++) {
-			TrainingPoint point = data.get(i);
-			x[i] = point.location().x();
-			y[i] = point.location().y();
-			z[i] = point.location().z();
-			Vector signal = point.signalStrength();
-			s1[i] = signal.get(0);
-			s2[i] = signal.get(1);
-			s3[i] = signal.get(2);
-			s4[i] = signal.get(3);
-			s5[i] = signal.get(4);
+	public Location getLocation(int tagId, Vector signalStrength) {
+		ArrayList<Double> xEstimates = new ArrayList<Double>();
+		ArrayList<Double> yEstimates = new ArrayList<Double>();
+		ArrayList<Double> zEstimates = new ArrayList<Double>();
+		for (int i=0; i<list.getXFunctions().size(); i++) {
+			double xHat = evaluate(list.getXFunctions().get(i), signalStrength.get(i));
+			double yHat = evaluate(list.getYFunctions().get(i), signalStrength.get(i));
+			double zHat = evaluate(list.getZFunctions().get(i), signalStrength.get(i));
+			xEstimates.add(xHat);
+			yEstimates.add(yHat);
+			zEstimates.add(zHat);
 		}
-		ArrayList<double[]> list = new ArrayList<double[]>();
-		list.add(x); list.add(y); list.add(z); 
-		list.add(s1); list.add(s2); list.add(s3); list.add(s4); list.add(s5);
-		return list;
+		return new Location(getAverage(xEstimates), getAverage(yEstimates), getAverage(zEstimates));
 	}
 	
+	public Double getAverage(ArrayList<Double> list) {
+		double sum = 0; 
+		for(int i=0; i<list.size(); i++) {
+			sum += list.get(i);
+		}
+		return sum / list.size();
+	}
 	
+	public double evaluate(Function function, double x) {
+		double value = 0; 
+		for (int i=0; i<function.size(); i++) {
+			value += Math.pow(x,i) * function.get(i);
+		}
+		return value;
+	}
 	
+	@Override
+	public void setTrainingData(TrainingPointList trainingData) {
+		this.data = trainingData; 
+	}	
 }
