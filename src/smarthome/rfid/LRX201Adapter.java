@@ -14,7 +14,7 @@ import java.util.*;
 
 public class LRX201Adapter implements Runnable, SerialPortEventListener {
 
-	private int POLL_INTERVAL = 37;
+	private int POLL_INTERVAL = 49;
 	private Thread readThread;
 	private SerialPort serialPort1;
 	private InputStream inputStream;
