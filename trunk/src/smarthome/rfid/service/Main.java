@@ -20,7 +20,6 @@ public class Main {
 //=======
 	private static final int UPDATE_INTERVAL = 5000;
 	private static final Algorithm ALGORITHM = new RegressionAlgorithm(1);
-//>>>>>>> .r33
 	private static final CommPortIdentifier PORT = PortChooser.selectPort();
 	private static final LocationServiceListener LISTENER = new LocationServiceListener() {
 		public void serviceEvent(String detail, int eventType) {

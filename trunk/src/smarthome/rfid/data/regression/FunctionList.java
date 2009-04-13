@@ -10,6 +10,7 @@ public class FunctionList {
 	ArrayList<Function> xFunctions;
 	ArrayList<Function> yFunctions;
 	ArrayList<Function> zFunctions;
+	int order; 
 	
 	public FunctionList(TrainingPointList data, int order) {
 		matrix = new DataMatrix(data); 
@@ -17,6 +18,7 @@ public class FunctionList {
 		xFunctions = new ArrayList<Function>();
 		yFunctions = new ArrayList<Function>();
 		zFunctions = new ArrayList<Function>();
+		this.order = order;
 	}
 	
 	public ArrayList<Function> getXFunctions() {
@@ -31,11 +33,12 @@ public class FunctionList {
 		return zFunctions;
 	}
 	
-	public void loadAllFunctions(int order) {
+	public void loadAllFunctions() {
 		for(int i=3; i<=7; i++) {
-			Function x = getFunction(matrix.get(i), matrix.getX(), order);
-			Function y = getFunction(matrix.get(i), matrix.getY(), order);
-			Function z = getFunction(matrix.get(i), matrix.getZ(), order);
+			//We want to regress x, y, z on the signal strengths. 
+			Function x = getFunction(matrix.getX(), matrix.get(i), order);
+			Function y = getFunction(matrix.getY(), matrix.get(i), order);
+			Function z = getFunction(matrix.getZ(), matrix.get(i), order);
 			xFunctions.add(x);
 			yFunctions.add(y);
 			zFunctions.add(z);

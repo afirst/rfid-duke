@@ -19,4 +19,12 @@ public class Function {
 	public double get(int index) {
 		return function[index];
 	}
+	
+	public String toString() {
+		String st = "";
+		for(int i=0; i<function.length; i++) {
+			st += function[i]+",";
+		}
+		return st;
+	}
 }
