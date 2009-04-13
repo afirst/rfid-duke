@@ -15,6 +15,7 @@ import smarthome.rfid.data.Algorithm;
 import smarthome.rfid.data.AntennaList;
 import smarthome.rfid.data.Location;
 import smarthome.rfid.data.RSSIReading;
+import smarthome.rfid.data.RoomMap;
 import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.data.Vector;
 import smarthome.rfid.data.filters.TrainingPointFilter;
@@ -31,8 +32,9 @@ public class LocationService implements LRX201AdapterListener {
 	private Timer updateTimer;
 	private DatabaseUpdater database;
 	private Algorithm algorithm;
+	private RoomMap roomMap; 
 		
-	public LocationService(String antennaFile, String trainingDataFile, int maxInterval, int updateInterval, Algorithm algorithm, CommPortIdentifier port, LocationServiceListener listener, int numAntennas) {
+	public LocationService(String antennaFile, String trainingDataFile, int maxInterval, int updateInterval, Algorithm algorithm, CommPortIdentifier port, LocationServiceListener listener, int numAntennas, String roomMapAddress) {
 		this.listener = listener;
 		this.algorithm = algorithm;
 		
@@ -49,6 +51,14 @@ public class LocationService implements LRX201AdapterListener {
 			//return;
 		//}
 		trainingData = new TrainingPointList();
+		roomMap = new RoomMap();
+		try {
+			roomMap.load(roomMapAddress);
+		} catch (FileNotFoundException e1) {
+			logEvent("ERROR: Room map file not found.", LocationServiceListener.ERROR);
+			return;
+		}
+		
 		try {
 			trainingData.load(trainingDataFile);
 		} catch (FileNotFoundException e) {
@@ -86,7 +96,7 @@ public class LocationService implements LRX201AdapterListener {
 			
 			// run through algorithm			
 			Location location = algorithm.getLocation(tagId, rssi);
-			//System.out.println(location);
+			System.out.println("location "+location + " " + roomMap.getRoom(location));
 			
 			// update in database			
 			if (location.equals(Location.UNKNOWN)) {
