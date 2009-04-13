@@ -32,7 +32,7 @@ public class FunctionList {
 	}
 	
 	public void loadAllFunctions(int order) {
-		for(int i=3; i<7; i++) {
+		for(int i=3; i<=7; i++) {
 			Function x = getFunction(matrix.get(i), matrix.getX(), order);
 			Function y = getFunction(matrix.get(i), matrix.getY(), order);
 			Function z = getFunction(matrix.get(i), matrix.getZ(), order);

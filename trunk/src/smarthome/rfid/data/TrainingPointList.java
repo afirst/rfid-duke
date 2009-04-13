@@ -15,7 +15,7 @@ public class TrainingPointList extends ArrayList<TrainingPoint> {
 		
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			String[] l = line.split("\t");
+			String[] l = line.split(",");
 			double x = Double.parseDouble(l[0]);
 			double y = Double.parseDouble(l[1]);
 			double z= Double.parseDouble(l[2]);

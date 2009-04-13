@@ -22,14 +22,14 @@ public class KNearestNeighbor implements Algorithm {
 			Entry<Double, TrainingPoint> current = it.next();
 			result.add(current.getValue().location());			
 		}
-		result.scale(1.0 / k);
+		result.scale(1.0 / k);		
 		return result;
 	}
 	
 	private TreeMap<Double, TrainingPoint> createDistanceMap(Vector signalStrength) {
 		TreeMap<Double, TrainingPoint> distances = new TreeMap<Double, TrainingPoint>(); 		
 		for (TrainingPoint pt : trainingData) {
-			distances.put(RFIDMath.getDistance(pt.signalStrength(), signalStrength), pt);			
+			distances.put(RFIDMath.getDistance(pt.signalStrength(), signalStrength), pt);
 		}
 		return distances;
 	}		

@@ -29,26 +29,13 @@ public class TrainingPointMerger implements TrainingPointFilter {
 		TrainingPointList newList = new TrainingPointList();
 		for (Location loc : map.keySet()) {
 			List<TrainingPoint> pts = map.get(loc);
-			double[] mean = new double[dim];
-			double[] variance = new double[dim];
-			double s2 = 0;
-			for (int i = 0; i < dim; i++) {
-				double[] vd = new double[pts.size()];
-				int j = 0;
-				for (TrainingPoint pt : pts) {
-					vd[j++] = pt.signalStrength().get(i);
-				}
-				Vector v = new Vector(vd);
-				v = RFIDMath.removeAll(v, 0);
-				if (v.size() == 0) v = new Vector(new double[] {0});
-				double u_ = RFIDMath.mean(v);
-				double s2_ = RFIDMath.variance(v);
-				mean[i] = u_;
-				variance[i] = s2_;
-				s2 += s2_;
-			}			
-			SignalStrength ss = new SignalStrength(new Vector(mean), s2);
-			TrainingPoint newPt = new TrainingPoint(loc, -1, ss);
+			List<SignalStrength> ss = new ArrayList<SignalStrength>();
+			for (TrainingPoint pt : pts) {
+				ss.add(pt.signalStrength());
+			}
+			SignalStrength merged = SignalStrengthMerger.filter(ss);
+			if (merged == null) merged = new SignalStrength(new double[dim]);
+			TrainingPoint newPt = new TrainingPoint(loc, -1, merged);
 			newList.add(newPt);
 		}
 		return newList;

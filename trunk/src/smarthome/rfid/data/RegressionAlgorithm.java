@@ -8,10 +8,10 @@ import smarthome.rfid.data.regression.FunctionList;
 public class RegressionAlgorithm implements Algorithm{
 	private FunctionList list; 
 	private TrainingPointList data;
+	private int order;
 	
 	public RegressionAlgorithm(int order) {
-		list = new FunctionList(data, order);
-		list.loadAllFunctions(order);
+		this.order = order;	
 	}
 
 	public Location getLocation(int tagId, Vector signalStrength) {
@@ -67,6 +67,8 @@ public class RegressionAlgorithm implements Algorithm{
 	
 	@Override
 	public void setTrainingData(TrainingPointList trainingData) {
-		this.data = trainingData; 
+		this.data = trainingData;
+		list = new FunctionList(data, order);
+		list.loadAllFunctions(order);
 	}	
 }
