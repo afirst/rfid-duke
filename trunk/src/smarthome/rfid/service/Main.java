@@ -14,12 +14,13 @@ public class Main {
 	private static final String ANTENNA_FILE = "";
 	private static final String TRAINING_DATA_FILE = "data.txt";
 	private static final int MAX_INTERVAL = 5000;
+	private static final String ROOM_MAP_ADDRESS = "room-map.txt";
 //<<<<<<< .mine
 	//private static final int UPDATE_INTERVAL = 2000;
 	//private static final Algorithm ALGORITHM = new FilteredKNN(4);
 //=======
 	private static final int UPDATE_INTERVAL = 5000;
-	private static final Algorithm ALGORITHM = new RegressionAlgorithm(1);
+	private static final Algorithm ALGORITHM = new KNearestNeighbor(3);
 	private static final CommPortIdentifier PORT = PortChooser.selectPort();
 	private static final LocationServiceListener LISTENER = new LocationServiceListener() {
 		public void serviceEvent(String detail, int eventType) {
@@ -28,6 +29,6 @@ public class Main {
 	};
 	
 	public static void main(String[] args) {
-		new LocationService(ANTENNA_FILE, TRAINING_DATA_FILE, MAX_INTERVAL, UPDATE_INTERVAL, ALGORITHM, PORT, LISTENER, NUM_ANTENNAS);
+		new LocationService(ANTENNA_FILE, TRAINING_DATA_FILE, MAX_INTERVAL, UPDATE_INTERVAL, ALGORITHM, PORT, LISTENER, NUM_ANTENNAS, ROOM_MAP_ADDRESS);
 	}
 }

@@ -73,7 +73,6 @@ public class RegressionAlgorithm implements Algorithm{
 	 * @return
 	 */
 	public double evaluate(Function function, double x) {
-		System.out.println(function);
 		double value = 0; 
 		for (int i=0; i<function.size(); i++) {
 			value += Math.pow(x,i) * function.get(i);
