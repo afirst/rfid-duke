@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 import smarthome.rfid.data.Location;
+import smarthome.rfid.data.SignalStrength;
 import smarthome.rfid.data.TrainingPoint;
 import smarthome.rfid.data.Vector;
 
@@ -47,7 +48,7 @@ public class DataAnalyzer implements Iterable<TrainingPoint> {
 				signalStrengths[i] = processDouble(l[4 + i]);
 			}
 			
-			DataList.add(new TrainingPoint(new Location(x, y, z), o, new Vector(signalStrengths)));
+			DataList.add(new TrainingPoint(new Location(x, y, z), o, new SignalStrength(signalStrengths)));
 		
 		}
 		s.close();

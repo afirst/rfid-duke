@@ -8,7 +8,7 @@ public class Vector implements Iterable<Double> {
 	protected Double[] vector;
 	
 	public Vector(int size) {
-		this(new Double[size]);
+		this(new double[size]);
 	}
 	
 	public Vector(double[] data) {
@@ -48,7 +48,7 @@ public class Vector implements Iterable<Double> {
 	public boolean equals(Object obj) {
 		Vector v = (Vector)obj;
 		if (v.vector.length != vector.length) return false;
-		for (int i = 0; i < vector.length; i++) {
+		for (int i = 0; i < vector.length; i++) {						
 			if (Math.abs(vector[i] - v.vector[i]) > 0.0001) return false;
 		}
 		return true;

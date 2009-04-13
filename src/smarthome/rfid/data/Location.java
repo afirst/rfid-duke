@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Location extends Vector {	
 	
-	public static final Location UNKNOWN = new Location(Double.NaN, Double.NaN, Double.NaN);	
+	public static final Location UNKNOWN = new Location(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);	
 	
 	public Location (double x, double y, double z) {
 		super(new double[] {x, y, z});
