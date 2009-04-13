@@ -1,5 +1,6 @@
 package smarthome.rfid.data;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import smarthome.rfid.data.regression.Function;
@@ -52,12 +53,27 @@ public class RegressionAlgorithm implements Algorithm{
 		}
 		double ret = 0; 
 		for (int i=0; i<estimates.size(); i++) {
-			ret += estimates.get(i) * (signals.get(i) / sum); 
+			double weight = 0;
+			if (signals.get(i)>=60 && signals.get(i)<=70) {
+				//give it less weight
+				weight = signals.get(i)/ (2*sum);
+			}
+			else {
+				weight = 2 * signals.get(i) / sum;
+			}
+			ret += estimates.get(i) * weight; 
 		}
 		return ret;
 	}
 	
+	/**
+	 * Evaluate a function for a x
+	 * @param function
+	 * @param x
+	 * @return
+	 */
 	public double evaluate(Function function, double x) {
+		System.out.println(function);
 		double value = 0; 
 		for (int i=0; i<function.size(); i++) {
 			value += Math.pow(x,i) * function.get(i);
@@ -69,6 +85,16 @@ public class RegressionAlgorithm implements Algorithm{
 	public void setTrainingData(TrainingPointList trainingData) {
 		this.data = trainingData;
 		list = new FunctionList(data, order);
-		list.loadAllFunctions(order);
+		list.loadAllFunctions();
 	}	
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		RegressionAlgorithm ra = new RegressionAlgorithm(1);
+		TrainingPointList data = new TrainingPointList(); 
+		data.load("data.txt");
+		ra.setTrainingData(data);
+		double[] ss = {0,	70,	65,	90,	68};
+		Vector signalStrength = new Vector(ss);
+		System.out.println(ra.getLocation(5, signalStrength));
+	}
 }

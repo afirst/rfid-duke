@@ -1,7 +1,9 @@
 package smarthome.rfid.data.regression;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import smarthome.rfid.data.RegressionAlgorithm;
 import smarthome.rfid.data.TrainingPoint;
 import smarthome.rfid.data.TrainingPointList;
 import smarthome.rfid.data.Vector;
@@ -75,5 +77,21 @@ public class DataMatrix extends ArrayList<double[]> {
 	
 	public double[] getS5() {
 		return this.get(7);
+	}
+	
+	public void print(double[] array) {
+		for (int i=0; i<array.length; i++) {
+			System.out.print(array[i]+",");
+		}
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		TrainingPointList data = new TrainingPointList(); 
+		data.load("data.txt");
+		DataMatrix matrix = new DataMatrix(data);
+		matrix.loadVectors();
+		matrix.print(matrix.getS5());
+		System.out.println();
+		System.out.println("size "+matrix.getY().length);
 	}
 }
