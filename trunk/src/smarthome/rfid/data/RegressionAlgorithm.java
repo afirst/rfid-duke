@@ -56,10 +56,10 @@ public class RegressionAlgorithm implements Algorithm{
 			double weight = 0;
 			if (signals.get(i)>=60 && signals.get(i)<=70) {
 				//give it less weight
-				weight = signals.get(i)/ (2*sum);
+				weight = signals.get(i)/ (sum);
 			}
 			else {
-				weight = 2 * signals.get(i) / sum;
+				weight = signals.get(i) / sum;
 			}
 			ret += estimates.get(i) * weight; 
 		}
@@ -88,11 +88,11 @@ public class RegressionAlgorithm implements Algorithm{
 	}	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		RegressionAlgorithm ra = new RegressionAlgorithm(1);
+		RegressionAlgorithm ra = new RegressionAlgorithm(3);
 		TrainingPointList data = new TrainingPointList(); 
 		data.load("data.txt");
 		ra.setTrainingData(data);
-		double[] ss = {0,	70,	65,	90,	68};
+		double[] ss = {105,	98,	73,	69,	70};
 		Vector signalStrength = new Vector(ss);
 		System.out.println(ra.getLocation(5, signalStrength));
 	}

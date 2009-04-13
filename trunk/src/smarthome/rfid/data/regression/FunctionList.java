@@ -46,12 +46,34 @@ public class FunctionList {
 	}
 	
 	public Function getFunction(double[] y, double[] x, int order) {
-		double[][] data = convert(y,x);
+		double[][] data = condenseAndConvert(y,x);
 		double[] coef = Regression.linear_equation(data,order);
 		return new Function(coef);
 	}
 	
-	 
+	/**
+	 * When regressing, we do not want to regress on x with 0s, so take off all 0s from x and its corresponding ys.
+	 * @param y
+	 * @param x
+	 * @return
+	 */
+	public double[][] condenseAndConvert(double[] y, double[] x) {
+		ArrayList<Double> yList = new ArrayList<Double>();
+		ArrayList<Double> xList = new ArrayList<Double>();
+		for (int i=0; i<y.length; i++) {
+			if (x[i]>= 70) {
+				yList.add(y[i]);
+				xList.add(x[i]);
+			}
+		}
+		double[][] ret = new double[yList.size()][2];
+		for (int i=0; i<yList.size(); i++) {
+			ret[i][0]=yList.get(i);
+			ret[i][1]=xList.get(i);
+		}
+		return ret;
+	}
+	
 	public double[][] convert(double[] y, double[] x) {
 		double[][] data = new double[y.length][2];
 		for (int i=0; i<y.length; i++) {
