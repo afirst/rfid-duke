@@ -32,7 +32,7 @@ public class LocationService implements LRX201AdapterListener {
 	private DatabaseUpdater database;
 	private Algorithm algorithm;
 		
-	public LocationService(String antennaFile, String trainingDataFile, int maxInterval, int updateInterval, Algorithm algorithm, CommPortIdentifier port, LocationServiceListener listener) {
+	public LocationService(String antennaFile, String trainingDataFile, int maxInterval, int updateInterval, Algorithm algorithm, CommPortIdentifier port, LocationServiceListener listener, int numAntennas) {
 		this.listener = listener;
 		this.algorithm = algorithm;
 		
@@ -42,12 +42,12 @@ public class LocationService implements LRX201AdapterListener {
 		
 		// load training data
 		antennas = new AntennaList();		
-		try {
-			antennas.load(antennaFile);
-		} catch (FileNotFoundException e) {
-			logEvent("ERROR: Antenna file not found.", LocationServiceListener.ERROR);
-			return;
-		}
+		//try {
+			//antennas.load(antennaFile);
+		//} catch (FileNotFoundException e) {
+			//logEvent("ERROR: Antenna file not found.", LocationServiceListener.ERROR);
+			//return;
+		//}
 		trainingData = new TrainingPointList();
 		try {
 			trainingData.load(trainingDataFile);
@@ -59,8 +59,9 @@ public class LocationService implements LRX201AdapterListener {
 		
 		// begin tracking
 		database = new DatabaseUpdater();
-		rssiTracker = new RSSITracker(antennas.size(), maxInterval);
-		adapter.start(5);	
+		rssiTracker = new RSSITracker(numAntennas, maxInterval);
+		adapter.start(numAntennas);
+		updateTimer = new Timer();
 		updateTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
@@ -78,26 +79,32 @@ public class LocationService implements LRX201AdapterListener {
 	private void tick() {
 		int[] tags = rssiTracker.getTags();
 		for (int tagId : tags) {
-			
+			if (tagId == 101) {
 			// get rssi values
 			Vector rssi = rssiTracker.getSignalStrength(tagId);
+			logEvent("RSSI: " + rssi, LocationServiceListener.GENERAL);
 			
-			// run through algorithm
+			// run through algorithm			
 			Location location = algorithm.getLocation(tagId, rssi);
+			//System.out.println(location);
 			
-			// update in database
+			// update in database			
 			if (location.equals(Location.UNKNOWN)) {
+				//logEvent("Set away " + tagId, LocationServiceListener.TAG);
 				database.setAway(tagId);
 			}
 			else {
+				//logEvent("Set home " + tagId + ": " + location, LocationServiceListener.TAG);
+				location.add(new Vector(new double[] {0, 0, -1}));
 				database.setHome(tagId, location);
+			}
 			}
 		}
 	}
 	
 	public void readTag(int antennaId, int tagId, int rssi) {
 		rssiTracker.logRssi(tagId, antennaId, new RSSIReading(rssi));
-		logEvent("Tag read: tagId " + tagId + ", antennaId " + antennaId + ", rssi " + rssi, LocationServiceListener.TAG);
+		//logEvent("Tag read: tagId " + tagId + ", antennaId " + antennaId + ", rssi " + rssi, LocationServiceListener.TAG);
 	}
 	
 	public String getStatus() {
