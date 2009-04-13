@@ -8,7 +8,7 @@ import smarthome.rfid.data.Location;
 
 
 public class DatabaseUpdater {
-	private static final String WEB_SERVICE_URL = "http://rfid.dorm.duke.edu/request.php?pw=7002xav&";
+	private static final String WEB_SERVICE_URL = "http://localhost/request.php?pw=7002xav&";
 	
 	public DatabaseUpdater() {	
 	}
@@ -26,7 +26,7 @@ public class DatabaseUpdater {
 		try {
 			String x = "" + location.x();
 			String y = "" + location.y();
-			String z = "" + location.z();
+			String z = "" + location.z();			
 			return callWebService("q=set_home&tag_id="+tagId+"&x="+x+"&y="+y+"&z="+z).equals("0");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class DatabaseUpdater {
 	}
 
 	private String callWebService(String query) throws Exception	{
-		StringBuilder str = new StringBuilder();
+		StringBuilder str = new StringBuilder();		
 		URL url = new URL(WEB_SERVICE_URL + query);
 		InputStream urlRobotStream = url.openStream();
 		byte[] bytes = new byte[1000];
