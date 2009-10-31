@@ -1,0 +1,241 @@
+  1  if x4<85.5 then node 2 else node 3
+  2  if x1<93.5 then node 4 else node 5
+  3  if x5<72.5 then node 6 else node 7
+  4  if x5<90.5 then node 8 else node 9
+  5  if x2<110.5 then node 10 else node 11
+  6  if x2<69.5 then node 12 else node 13
+  7  if x3<79.5 then node 14 else node 15
+  8  if x4<67.5 then node 16 else node 17
+  9  if x1<80.5 then node 18 else node 19
+ 10  if x3<87 then node 20 else node 21
+ 11  class = Media
+ 12  if x4<105.5 then node 22 else node 23
+ 13  if x2<75.5 then node 24 else node 25
+ 14  if x4<101.5 then node 26 else node 27
+ 15  if x2<88 then node 28 else node 29
+ 16  if x2<85.5 then node 30 else node 31
+ 17  if x2<70.5 then node 32 else node 33
+ 18  if x5<97.5 then node 34 else node 35
+ 19  if x4<80.5 then node 36 else node 37
+ 20  if x4<69.5 then node 38 else node 39
+ 21  if x1<97.5 then node 40 else node 41
+ 22  if x5<33 then node 42 else node 43
+ 23  if x2<67.5 then node 44 else node 45
+ 24  if x4<93.5 then node 46 else node 47
+ 25  if x1<95.5 then node 48 else node 49
+ 26  if x2<34 then node 50 else node 51
+ 27  if x5<86.5 then node 52 else node 53
+ 28  if x1<34 then node 54 else node 55
+ 29  class = Kitchen
+ 30  if x1<75.5 then node 56 else node 57
+ 31  if x3<72.5 then node 58 else node 59
+ 32  if x5<73.5 then node 60 else node 61
+ 33  if x1<74.5 then node 62 else node 63
+ 34  if x4<32.5 then node 64 else node 65
+ 35  if x3<94.5 then node 66 else node 67
+ 36  class = Hall1
+ 37  class = Commons
+ 38  if x2<90.5 then node 68 else node 69
+ 39  if x4<81.5 then node 70 else node 71
+ 40  class = Commons
+ 41  class = Kitchen
+ 42  if x4<93.5 then node 72 else node 73
+ 43  if x2<68.5 then node 74 else node 75
+ 44  class = DirtyLab
+ 45  class = Bathroom1
+ 46  class = Bedroom1
+ 47  if x1<70.5 then node 76 else node 77
+ 48  class = DirtyLab
+ 49  class = Commons
+ 50  if x5<85.5 then node 78 else node 79
+ 51  if x5<82.5 then node 80 else node 81
+ 52  class = Bathroom1
+ 53  class = Bathroom2
+ 54  class = Bedroom2
+ 55  if x4<90.5 then node 82 else node 83
+ 56  if x3<85 then node 84 else node 85
+ 57  if x3<79.5 then node 86 else node 87
+ 58  if x5<69.5 then node 88 else node 89
+ 59  if x5<70.5 then node 90 else node 91
+ 60  if x1<79.5 then node 92 else node 93
+ 61  if x3<76.5 then node 94 else node 95
+ 62  if x4<71.5 then node 96 else node 97
+ 63  if x3<73 then node 98 else node 99
+ 64  if x2<34 then node 100 else node 101
+ 65  if x3<84 then node 102 else node 103
+ 66  class = Hall2
+ 67  class = Hall1
+ 68  if x1<102.5 then node 104 else node 105
+ 69  if x3<76 then node 106 else node 107
+ 70  if x5<80.5 then node 108 else node 109
+ 71  class = Commons
+ 72  class = Outside
+ 73  class = DirtyLab
+ 74  if x1<73.5 then node 110 else node 111
+ 75  class = Bedroom1
+ 76  class = DirtyLab
+ 77  class = Bathroom1
+ 78  class = Bedroom3
+ 79  class = Bathroom2
+ 80  if x1<35 then node 112 else node 113
+ 81  if x2<80 then node 114 else node 115
+ 82  class = Commons
+ 83  if x3<94.5 then node 116 else node 117
+ 84  if x1<67.5 then node 118 else node 119
+ 85  class = Hall2
+ 86  if x3<65.5 then node 120 else node 121
+ 87  class = Hall1
+ 88  class = Media
+ 89  class = Outside
+ 90  class = Commons
+ 91  if x5<76.5 then node 122 else node 123
+ 92  if x3<67.5 then node 124 else node 125
+ 93  class = Hall1
+ 94  if x5<80.5 then node 126 else node 127
+ 95  class = Outside
+ 96  class = Outside
+ 97  if x5<35.5 then node 128 else node 129
+ 98  if x2<78 then node 130 else node 131
+ 99  if x4<73 then node 132 else node 133
+100  class = Hall1
+101  class = Backstairs
+102  class = Bathroom2
+103  if x1<34.5 then node 134 else node 135
+104  if x3<70.5 then node 136 else node 137
+105  if x5<67.5 then node 138 else node 139
+106  if x2<106 then node 140 else node 141
+107  class = CleanLab
+108  if x1<118 then node 142 else node 143
+109  class = Commons
+110  class = Bedroom1
+111  class = DirtyLab
+112  class = Bedroom3
+113  class = Bathroom1
+114  class = Kitchen
+115  class = Commons
+116  class = Commons
+117  class = Kitchen
+118  if x2<70 then node 144 else node 145
+119  if x5<68.5 then node 146 else node 147
+120  if x2<67.5 then node 148 else node 149
+121  if x2<72.5 then node 150 else node 151
+122  class = Outside
+123  class = Commons
+124  if x4<70.5 then node 152 else node 153
+125  class = Bedroom3
+126  if x2<67.5 then node 154 else node 155
+127  if x4<83.5 then node 156 else node 157
+128  class = Hall1
+129  if x5<86 then node 158 else node 159
+130  class = Outside
+131  class = Commons
+132  class = Hall2
+133  if x3<97.5 then node 160 else node 161
+134  class = Hall2
+135  class = Kitchen
+136  if x3<64.5 then node 162 else node 163
+137  class = Stairs
+138  class = Media
+139  if x2<82 then node 164 else node 165
+140  if x1<103.5 then node 166 else node 167
+141  class = CleanLab
+142  if x5<76.5 then node 168 else node 169
+143  class = CleanLab
+144  if x5<75 then node 170 else node 171
+145  class = Bedroom5
+146  if x3<32 then node 172 else node 173
+147  if x3<66.5 then node 174 else node 175
+148  class = Bathroom3
+149  class = Outside
+150  if x3<73.5 then node 176 else node 177
+151  if x3<66.5 then node 178 else node 179
+152  class = Bedroom2
+153  if x5<67.5 then node 180 else node 181
+154  if x3<66.5 then node 182 else node 183
+155  class = Outside
+156  if x3<72.5 then node 184 else node 185
+157  class = Bathroom2
+158  class = Commons
+159  class = Stairs
+160  class = Commons
+161  class = Kitchen
+162  if x2<88.5 then node 186 else node 187
+163  if x5<68.5 then node 188 else node 189
+164  class = CleanLab
+165  class = Outside
+166  class = Media
+167  if x3<32 then node 190 else node 191
+168  if x5<70.5 then node 192 else node 193
+169  class = CleanLab
+170  if x3<68.5 then node 194 else node 195
+171  if x5<83 then node 196 else node 197
+172  class = Outside
+173  if x2<33 then node 198 else node 199
+174  class = Bedroom5
+175  if x1<73.5 then node 200 else node 201
+176  class = Bedroom4
+177  class = Commons
+178  class = Outside
+179  if x2<79 then node 202 else node 203
+180  class = Outside
+181  if x5<68.5 then node 204 else node 205
+182  class = Bedroom3
+183  class = Bedroom2
+184  class = Bedroom3
+185  class = Bedroom2
+186  class = Outside
+187  class = CleanLab
+188  class = Media
+189  class = Outside
+190  class = CleanLab
+191  if x1<123.5 then node 206 else node 207
+192  class = CleanLab
+193  class = Stairs
+194  if x3<32 then node 208 else node 209
+195  if x5<33.5 then node 210 else node 211
+196  if x2<33 then node 212 else node 213
+197  class = Bedroom3
+198  class = Bedroom4
+199  class = Hall1
+200  if x1<72.5 then node 214 else node 215
+201  class = Bedroom4
+202  if x2<74.5 then node 216 else node 217
+203  class = Bedroom4
+204  class = Bedroom1
+205  class = Outside
+206  if x5<70.5 then node 218 else node 219
+207  class = Media
+208  if x5<70.5 then node 220 else node 221
+209  if x3<66.5 then node 222 else node 223
+210  class = Bedroom2
+211  class = Outside
+212  class = Stairs
+213  class = Bedroom2
+214  if x3<68.5 then node 224 else node 225
+215  class = Bedroom1
+216  class = Bedroom4
+217  class = Bathroom3
+218  if x1<104.5 then node 226 else node 227
+219  class = Commons
+220  if x1<66.5 then node 228 else node 229
+221  class = Bedroom2
+222  class = Bedroom5
+223  class = Bedroom4
+224  class = Hall1
+225  if x2<67.5 then node 230 else node 231
+226  class = CleanLab
+227  if x1<120 then node 232 else node 233
+228  if x2<68 then node 234 else node 235
+229  class = Outside
+230  class = Outside
+231  class = Bedroom5
+232  class = Media
+233  class = CleanLab
+234  if x1<65.5 then node 236 else node 237
+235  class = Bedroom4
+236  if x1<32.5 then node 238 else node 239
+237  class = Bedroom4
+238  if x4<33.5 then node 240 else node 241
+239  class = Outside
+240  class = Bedroom4
+241  class = Outside
